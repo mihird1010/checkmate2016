@@ -1,0 +1,10 @@
+costs
+pipes=100
+question points
+	1=50
+	2=100
+	3=150
+wrong answer
+	1st attempt=10
+	2nd attempt=20
+
