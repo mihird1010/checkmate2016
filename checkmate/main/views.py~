@@ -202,6 +202,11 @@ def notAntShant(pipes,pipe,pos):
 	if pos==(hlen,vlen):
 		#allow
 		
+def delete(request):
+	u=request.user
+	up=UserProfile.objects.get(user=u)
+	up.pipes=up.pipes/10
+	
 @login_required
 def main(request):
 	u=request.user

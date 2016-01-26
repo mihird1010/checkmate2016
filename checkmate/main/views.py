@@ -201,6 +201,16 @@ def notAntShant(pipes,pipe,pos):
 					vlen--
 	if pos==(hlen,vlen):
 		#allow
+
+@login_required		
+def delete(request):
+	u=request.user
+	try:
+		up=UserProfile.objects.get(user=u)
+		up.pipes=up.pipes/10
+	except:
+		raise Http404		
+	
 		
 @login_required
 def main(request):
