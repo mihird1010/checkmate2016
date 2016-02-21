@@ -3,4 +3,4 @@ from checkmate.main.models import *
 # Register your models here.
 admin.site.register(Question)
 admin.site.register(UserProfile)
-#admin.site.register(PipeList)
+admin.site.register(PipeList)

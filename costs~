@@ -5,4 +5,6 @@ question points
 	2=100
 	3=150
 wrong answer
-	-0
+	1st attempt=10
+	2nd attempt=20
+

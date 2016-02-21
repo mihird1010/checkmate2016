@@ -42,187 +42,88 @@ def login(request):
 
 @login_required
 def question(request) :
-	if request.POST:
-		no = int(request.POST['no'])
-	if request.GET:
-		no=int(request.GET['no'])
+	if request.method== "POST":
+		no = int(request.POST['no',])
+	#if request.method== "GET":
+	#	no=int(request.GET.get['no'])
 	u=request.user
-	cflip=1
 	try:
 		up=UserProfile.objects.get(user=u)
-	except ObjectDoesNotExist:	
+	except ObjectDoesNotExist:
 		raise Http404
-	level=up.level
-	if level!=1 and level != 2:#(11) send request from transition
+	try:
+		ques=Question.objects.get(no=no)
+	except:
 		raise Http404
-	if level == 1:#(6) manually uses flip in question
-		try:
-			q=Question.objects.get(no=no,level=1)#(12)ensuring doesnt attempt level 2 question in level 1
-		except :
-			raise Http404
-	else :
-		if up.fqs.filter(no=no).exists(): #(5)& (4) check if viewing a question after flip
-			try:
-				q=Question.objects.get(no=no,flip = True,level=2)#(12)ensuring doesnt attemp level 1 question in level 2
-				cflip = 0
-			except :
-				raise Http404
-		else:
-			q=Question.objects.get(no=no,flip = False,level=2)#(12)ensuring doesnt attemp level 1 question in level 2
-	if up.qs.filter(pk=q.no).exists():#(10) security for manual entry of question
-		raise Http404
-	if request.POST and 'answer' in request.POST:
+	resp={}
+	resp['status']=1
+	if request.method=="POST" and 'answer' in request.POST:
 		data=request.POST
-		
-		if data['dd']=='True' and up.ddqs.filter(pk=q.id).exists():#(3) security for double dd
-			raise Http404
-		if data['dd']=='True':
-			if up.dd < 1 :#(1) checking if not giving manual command for dd even if he doesnt have the power up
-				raise Http404
-		if data['answer']==q.answer:
-			up.score += q.price
-			up.qs.add(q)
-			up.save()
-			resp={}
-			resp['status']=1
-			resp['score']=up.score
-			resp['qno']=q.no
-			json = simplejson.dumps(resp)
-			return HttpResponse(json, mimetype='application/json')
-			#return HttpResponseRedirect('/main/')
-		elif data['answer'] is not q.answer :	
-			if data['dd']=='True' :
-				up.ddqs.add(q)
-				up.dd -= 1
-				up.save()
-				resp={}
-				resp['status']=2
-				resp['score']=up.score
-				json = simplejson.dumps(resp)
-				return HttpResponse(json, mimetype='application/json')
-				#return HttpResponseRedirect('/question/'+str(no)+'/')#return question for w/o dd
-			up.score -= q.price /2 #<check & confirm>this is for -ve marking can be removed if needed
-			up.qs.add(q)
-			up.save()
-			resp={}
+		qas=up.qa
+		for i in qas:
+			if no==i.no:
+				resp['status']=0
+				break
+		if data['answer'].lower()==ques.answer&resp['status']==1:
+			up.qa.add(ques)
+			if ques.difficulty==1:
+				up.score+=50
+			elif ques.difficulty==2:
+				up.score+=100
+			elif ques.difficulty==3:
+				up.score+=150
+		elif data['answer'].lower()!=ques.answer:
+											#deduct points for wrong answer
 			resp['status']=0
-			resp['score']=up.score
-			resp['qno']=q.no
-			json = simplejson.dumps(resp)
-			return HttpResponse(json, mimetype='application/json')
-
-		#	return HttpResponseRedirect('/main/')
-	if request.POST and 'flip' in request.POST:
-		if up.flip == 0 or q.flip is True :#(2) & (6)checking if not giving manual command for flip even if he doesnt have the power up
-			raise Http404
-
-		up.fqs.add(q)#(4) manually enters flip for smae question
-		up.flip -=1
-		up.save()
-		resp={}
-		resp['status']=1
-		resp['qno']=q.no
-		#resp['score']=up.score
-		json = simplejson.dumps(resp)
-		return HttpResponse(json, mimetype='application/json')
-		#return HttpResponseRedirect('/question/'+str(no)+'/')#redirect to same page with same question no.
-		'''else:
-			if level==1 or up.ddqs.filter(pk=q.id).exists() or up.dd==0:
-				form.fields.pop('dd')
-			return render_to_response('question.html', {'form':form,'q':q,'u':u,'up':up},context_instance=RequestContext(request))#display question again'''
-	elif request.POST:
-		raise Http404
-	else :
-		cdd = 1
-		if level==1 or up.ddqs.filter(pk=q.id).exists() :
-			cdd=0
-		resp={}
-		resp['status']=1
-		resp['content']=q.content
-		resp['cdd']=cdd
-		resp['cflip']=cflip
-		resp['price']=q.price
-		json = simplejson.dumps(resp)
-		return HttpResponse(json, mimetype='application/json')
-		#return render_to_response('question.html', {'form':form,'q':q,'u':u,'up':up},context_instance=RequestContext(request))
-
-@login_required
-def transition(request):
-	u=request.user
-	up=UserProfile.objects.get(user=u)
-	minscore=200#<check or complete> min score required to make transtion from one level to another
-	level=up.level
-	if up.score >= minscore and level==1:#(7)ensuring this is not a manual post request and hes sending it only to access from level 1
-		up.level=3#(8)to make sure he doesnt manual request to transition market place
-		up.save()
-		resp={}
-		resp['status']=1
-		json = simplejson.dumps(resp)
-		return HttpResponse(json, mimetype='application/json')
-		#return HttpResponseRedirect('/market/')
-	else :
-		raise Http404
-
-@login_required
-def pathmake(request):
-	try:
-		up=UserProfile.objects.get(user=u)
-	except ObjectDoesNotExist:	
-		raise Http404
-	try:
-		if isValid(up.pipes,pipe) && notAntShant(up.pipes,pipe,up.pos):
-			pipes=pipes*10
-			pipes=pipes+pipe
-			#update array, add in pathlength
 			
-	except ObjectDoesNotExist:	
-		raise Http404
-		#update in array that the user can't add this pipe
-		
-def notAntShant(pipes,pipe,pos):
-	hlen=0
-	vlen=0
-	while pipes>0:
-		n=pipes%10
-		pipes=pipes/10
-		if n!=2:
-			hlen++
-		if n== #down, Lshaped in any way
-			vlen++
-		elif n== #up, Lshaped in any way
-			vlen--
-		elif n==2:
-			pipes2=pipes
-			while pipes2%10==2:
-				pipes2=pipes2/10
-				if pipes2%10== #going down, Lshaped in any way
-					vlen++
-				elif pipes2%10== #going up, Lshaped in any way
-					vlen--
-	if pos==(hlen,vlen):
-		#allow
-		
-def delete(request):
-	u=request.user
-	up=UserProfile.objects.get(user=u)
-	up.pipes=up.pipes/10
+	resp['score']=up.score
+	resp['qno']=q.no
+	json = json.dumps(resp)								#do simplejson if reqd
+	return HttpResponse(json, mimetype='application/json')			
+
+
+
+
 	
 @login_required
 def main(request):
 	u=request.user
 	up=UserProfile.objects.get(user=u)
-	level=up.level
-	'''if level == 3:
-		return HttpResponseRedirect('/market/')'''
-	eqset=up.qs.filter(level=level).order_by('no')
-	elist=eqset.values('no')
-	qset=Question.objects.filter(level=level,flip=False).exclude(no__in=elist).order_by('no')
-	return render_to_response('index.html', {'qset':qset,'eqset':eqset,'u':u,'up':up},context_instance=RequestContext(request))
+	eqset=Question.objects.filter(difficulty=1)
+	mqset=Question.objects.filter(difficulty=2)
+	dqset=Question.objects.filter(difficulty=3)
+	return render_to_response('index.html', {'qset':qset,'up':up},context_instance=RequestContext(request))
 
 def rulebook(request):
 	 return render_to_response('rulebook.html',context_instance=RequestContext(request))
 
+@login_required
+def arena(request):
+	u=request.user
+	up=UserProfile.objects.get(user=u)
+	return render_to_response('arena.html', {'inventory':up.pipe_inventory,'score':up.score}, context_instance=RequestContext(request))
+	
 
+@login_required
+def buy(request):
+	pipe=request.pipe
+	up=request.user
+	u=UserProfile.objects.get(user=u)
+	inv=up.pipe_inventory.split(',')
+	up.pipe_inventory[pipe]+=1
+	
+	if u.score>=100:
+		resp['status']=1
+		up.score-=100
+	
+	up.pipe_inventory=','.join(inv)
+	
+	resp['inventory']=up.pipe_inventory
+	resp['score']=u.score
+	json = json.dumps(resp)								#do simplejson if reqd
+	return HttpResponse(json, mimetype='application/json')
+	
+	
 @login_required
 def logout(request):
     auth.logout(request)
@@ -262,3 +163,98 @@ def register(request):
 	else:
 		form=RegistrationForm()
 		return render_to_response('REGIShtml.html',{'form':form},context_instance=RequestContext(request))
+
+@login_required
+def validate(request):
+	u=request.user
+	up=UserProfile.objects.get(user=u)
+	r={}
+	s=request.snapshot
+	x=check_success(s,0,0,2,5,4,3)
+	inv=up.pipe_inventory.split(',')
+	
+	if x:
+		for i in s:
+			if i>0:
+				inv[i-1]-=1
+			if inv[i-1]<0:
+				r['status']=-1
+				inv = up.pipe_inventory.split(',')
+	else:		
+		r['status']=0
+	if r['status']==1:
+		up.score +=x*200			#document this
+		if x>18:
+			up.score +=1000
+		elif x>12:
+			up.score +=500
+	r['score']=up.score
+	r['inventory']=up.pipe_inventory
+	json = json.dumps(resp)								#do simplejson if reqd
+	return HttpResponse(json, mimetype='application/json')
+	
+		
+
+def check_success(s,i,j,ent,desti,destj,destent):
+	"Checks the array to contain pipe path from start to end"
+	
+	pipe_map ={
+	#no problem in exchanging key for any pipe just make sure it's value is right
+	"p0": 0, #if no pipe then value zero
+	"p1": 14,
+	"p2": 35,
+	"p3": 6,
+	"p4": 15,
+	"p5": 10,
+	"p6": 21,
+	}
+	#	ent is the entry point for the pipe
+	#	the numbers associated with box is
+	#	2 - left; 3 - top; 5 - right; 7 - bottom
+	#	prime numbers are used so that we can define pipes with product of this numbers
+	#This function requires:
+	#	array which you have to check
+	#	json for maping of value in array to followed convention
+	#	source coordinates
+	#	initial entry point
+	#	destination coordinates where you have to reach
+	#	destination entry point
+	success = False
+	count,ext,num=0,0,0
+	while (i>=0 and i<len(s) and j>=0 and j<len(s[0])):
+		num = int(pipe_map["p"+str(s[(i*5)+j])])
+		if (num==0 or num%ent != 0):
+			break
+		else:
+			count+=1
+			ext = num/ent
+			if (ext==7):
+				i+=1
+				ent=3
+			elif (ext==5):
+				j+=1
+				ent=2
+			elif (ext==3):
+				i-=1
+				ent=7
+			elif (ext==2):
+				j-=1
+				ent=5
+			elif (ext*ent==210):
+				if (ext%21==0):
+					if ent==2:
+						i+=1 
+					else:
+						i-=1
+				else:
+					if ent==2:
+						j+=1 
+					else:
+						j-=1
+			else:
+				return 0
+		if (i==desti and j==destj and ent==destent):
+			success = True
+			break
+	return count if success else 0
+

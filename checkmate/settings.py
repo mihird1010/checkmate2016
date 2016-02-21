@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 # Quick-start development settings - unsuitable for production
@@ -75,17 +75,13 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 LOGIN_URL='/login/'
-
 USE_I18N = True
-
 USE_L10N = True
 
 USE_TZ = True
-STATIC_ROOT =  os.path.join(os.path.dirname(__file__), 'Static').replace('\\', '/')
+STATIC_ROOT =  os.path.join(os.path.dirname(__file__), 'static').replace('\\', '/')
 MEDIA_ROOT =  os.path.join(os.path.dirname(__file__), 'media').replace('\\', '/')
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Static files (CSS, JavaScript, Images)
@@ -93,3 +89,5 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'checkmate', 'static'),)

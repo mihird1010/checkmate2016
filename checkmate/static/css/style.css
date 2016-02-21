@@ -1,0 +1,707 @@
+
+body{
+	margin:0;
+}
+
+
+#puzzlePage,#questionsPage,#loginPage,#marketPage{
+	min-height: 100vh;
+}
+
+#scorePanel{
+	background: rgb(102, 204, 204); 
+	padding: 1px 50px;
+	left: -9px;
+	border-top-color: rgb(47, 79, 79); 
+	border-top-width: 3px;
+	border-top-style: solid;
+	position: absolute;
+	z-index: 9;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	box-shadow: 0px 0px 50px 0px #66cccc;
+}
+
+#scorePanel p{
+	font-family: "Roboto Condensed", sans-serif;
+	    text-align: center;
+    margin: 8px auto;
+    font-weight: bold;
+}
+
+#puzzlePage,#loginPage,#marketPage{
+	background-image: url("../img/pipesV0.png");
+	background-color: rgba(236, 240, 241,0.5);
+	background-repeat: no-repeat;
+}
+
+
+.mainContent{
+	position: absolute;
+	min-height: 100vh;
+	min-width: 100vw;
+	background-image: url("../img/pipesV.png");
+	background-color: rgba(236, 240, 241,0.5);
+	background-repeat: no-repeat;
+}
+
+#questionSection{
+	position: relative;
+	background: rgba(197, 222, 119,0.45);
+	top: 17vh;
+	width: 65vw;
+	border-right: 35px solid rgb(152, 197, 121);
+	border-radius: 25px;
+
+}
+
+
+#qNo{
+	background-image: url("../img/drop.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	left: 20vw;
+	position: relative;
+	width: 50px;
+	padding: 1px 2px;
+}
+
+#qNo h1{
+	font-family: 'Roboto Condensed', sans-serif;
+	text-align: center;
+
+}
+
+#questionContainer h3{
+	font-family: 'Roboto Condensed', sans-serif;
+	overflow-y: scroll;
+	height: 39vh;
+	text-align: center;
+	font-size: 1em;
+}
+
+#questionContainer {
+	position: relative;
+	left: 20vw;
+	width: 45vw;
+	padding: 3vh 0vh; 
+
+}
+
+.sidePanel{
+	z-index: 3;
+	position: absolute;
+	right: 0; 
+	width: 25vw;
+	min-height: 100vh;
+	background: rgb(75, 67, 181);
+	box-shadow: -6px 16px 66px 5px black;
+}
+
+body{
+	overflow-x: hidden;
+}
+
+.sidePanel h1{
+	font-family: 'Gtek',sans-serif;
+	text-align: center;
+	border-bottom: 7px solid white;
+	padding: 25px 0px;
+	margin: 0;    
+	border-radius: 20%;
+	letter-spacing: 5px;
+}
+
+
+#questionsPanel{
+	position: relative;
+	min-height: 74vh;
+	margin-top: 22px;
+	padding: 31px 18px;
+}
+
+#questionsPanel ul{
+	padding-left: 12px !important;
+}
+
+#questionsPanel ul li{
+	font-family: 'Verdana',sans-serif;
+	position: relative;
+	display: inline-block;
+	background: white;
+	padding: 15px;
+	margin: 4px;    
+	border-radius: 10%;
+	transition: transform 0.2s;
+	cursor: pointer;
+}
+
+
+#questionsPanel ul li:hover{	
+	transform: scale(1.1,1.1);
+}
+
+#questionContainer h3::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#questionContainer h3::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: #F5F5F5;
+}
+
+#questionContainer h3::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+	border: 2px solid #555555;
+}
+
+#questionContainer h3::-moz-scrollbar-track
+{
+	-moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#questionContainer h3::-moz-scrollbar
+{
+	width: 7px;
+	background-color: #F5F5F5;
+}
+
+#questionContainer h3::-moz-scrollbar-thumb
+{
+	background-color: #000000;
+	border: 2px solid #555555;
+}
+
+
+
+@font-face{
+	font-family:'Gtek';
+	src: url('../fonts/gtek.ttf');
+}
+#submitArea{
+	position: absolute;
+	bottom: 3vh;
+	display: inline;
+	left: 22vw;
+	width: 401px;
+	background: rgba(158,208,246,0.4);
+	border-radius: 4px;
+	padding: 13px 6px;
+}
+
+#submitArea h4{
+	display: inline;
+	font-family: 'ASans',sans-serif;
+	margin: 5px 15px;
+}
+
+#submitButton {
+	cursor: pointer;
+	position: relative;
+	left: 32px;
+	background: #25A6E1;
+	background: -moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background: -webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background: -o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background: -ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background: linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#25A6E1',endColorstr='#188BC0',GradientType=0);
+	padding: 7px 18px;
+	font-family: 'Roboto Condensed', sans-serif;
+	color: #fff;
+	font-size: 14px;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border:1px solid #1A87B9;
+	transition: all 0.2s ease;
+}           
+
+
+#submitButton:hover {
+	box-shadow: 0px 0px 7px 1px #1A87B9;
+}
+
+
+#submitInner{
+	margin: 0 auto;
+	background: white;
+	width: 372px;
+	padding: 7px;
+	border: 1px solid rgb(138,169,219);
+	border-radius: 4px;
+}
+
+#submitInner input{
+	outline: none;
+	border: 0;
+	font-size: 19px;
+}
+
+
+#puzzleArea{
+
+	/* vertical-align: middle; */
+	width: 37vw;
+	min-height: 64vh;
+	position: relative;
+	/* margin: 0vh auto; */
+	background: white;
+	/* padding: 59px; */
+	top: 9vh;
+	left: 25vw;
+	/* border: 1px solid black; */
+	border-radius: 10px;
+	box-shadow: 0px 0px 60px -9px black;
+	padding-bottom: 21px;
+	padding-top: 19px;
+
+}
+
+#initPipe{
+	position: absolute;
+	width: 15%;
+	left: -36px;
+	top: 47px;
+}
+
+#endPipe{
+	position: absolute;
+	width: 15%;
+	right: -41px;
+	bottom: 78px;
+}
+
+#endPipe0{
+	position: absolute;
+	height: 15%;
+	bottom: -24px;
+	right: 56px;
+}	
+
+
+#puzzlePieces li{
+	display: inline-block;
+	width: 16%;
+	border: 1px inset;
+	margin: 3px;
+	cursor: move;
+}
+
+#puzzlePieces li img{
+	width:100%;
+}
+
+
+#inventoryPanel{
+	position: relative;
+	min-height: 74vh;
+	margin-top: 22px;
+	padding: 31px 18px;
+}
+
+
+#inventoryList{
+	padding-left: 12px !important;
+}
+
+
+
+#inventoryPanel ul li{
+	
+	font-family: 'Verdana',sans-serif;
+	position: relative;
+	background: transparent;
+	display: inline-block;
+	width: 22%;    
+	margin: 16px 3px;    
+
+}
+
+#inventoryList li img{
+	cursor: move;
+	width:100%;
+	transition: all 0.3s;
+}
+
+#inventoryList li i{
+	cursor: pointer;
+	position: relative;
+	top: 5px;
+	color: white;
+}
+
+#inventoryList li p{
+	display: inline;
+	position: relative;
+	top: 5px;
+	left: 14px;
+	padding: 3px 7px;
+	border: 1px solid#FCC90B;
+	border-radius: 3px;
+	font-size: 12px;
+	color: black;
+	font-weight: 600;
+	background: #FCC90B;
+}
+
+
+#inventoryList li img:hover{	
+	transform: scale(1.1,1.1);
+}
+
+
+
+.modal{
+	cursor: crosshair;
+	display: none;
+	position: absolute;
+	z-index: 4;
+	top:0;
+	background: rgba(0,0,0,0.3);
+	width: 100vw;
+	height: 100vh;
+}
+
+.modalContent{
+	z-index: 8;
+	cursor: default !important;
+	position: relative;
+	top:23vh;
+	margin:0 auto;
+	width: 380px;
+	height: 262px;
+	background: white;
+	box-shadow: -8px 10px 31px 3px black;
+	border-radius: 9px;
+	overflow: hidden;
+}
+
+.modalContent h1{
+	font-family: 'Gtek',sans-serif;
+	padding: 17px 0px;
+	margin: 0;
+	text-align: center;
+	background: #FFF44F;
+	border-bottom: 8px solid #FFCC33;
+	border-top: 8px solid #FFCC33;
+}
+
+.modalContent p,h6{
+	font-family: 'ASans',sans-serif;
+	font-size: 26px;
+	text-align: center;
+	margin: 8px auto;
+}
+
+.modalContent span{
+	font-weight: bold;
+}
+
+#modalFooter{
+	border-top: 1px solid #ddd;
+	bottom: 0px;
+	width: 95%;
+	padding: 10px 0px;
+	margin: 20px auto;
+}
+
+#modalFooter p{
+	position: relative;
+	display: inline;
+}
+
+
+#modalFooter .fa-cart-plus{
+	float:left;
+	color: #96BD0D;
+	font-size: 33px;
+}
+
+
+#modalFooter .fa-times{
+	cursor: pointer;
+	float:right;
+	color: red;	
+	font-size: 22px;
+	position: relative;
+	top: 9px;
+}
+
+#modalFooter p{
+	font-family: 'Roboto Condensed', sans-serif;
+	display: inline;
+	position: relative;
+	top: 5px;
+	left: 14px;
+	padding: 3px 7px;
+	border: 1px solid#FCC90B;
+	border-radius: 3px;
+	font-size: 12px;
+	color: black;
+	font-weight: 600;
+	background: #FCC90B;
+}
+
+
+.Content{
+	cursor: default;
+	position: relative;
+	margin: 0 auto;
+	width: 60vw;
+	height: 536px;
+	padding-top: 28px;
+	background-color: white;
+	top: 5vh;
+	box-shadow: 0px 0px 7px -2px;
+	border-radius: 2px;
+}
+
+.Content h4{
+	font-family: 'Roboto Condensed',sans-serif;
+	padding-left: 14px;
+	margin: 0px;
+	font-size: 27px;
+	border-left: 6px solid #FCC90B;
+	text-transform: uppercase;
+	color: #FCC90B;
+	letter-spacing: 0px;
+}
+
+.close,#gotoMarket{
+	cursor: pointer;
+}
+
+.close{
+	background: red !important;
+    color: white !important;
+    border: 1px solid red !important;
+    padding: 3px 6px !important;
+    /* font-size: 14px !important; */
+    font-family: 'Gtek' !important;
+    text-transform: lowercase !important;
+    
+	text-align: center !important;
+	margin: 8px auto !important;
+}
+
+form{
+	margin: 3px 0px;
+}
+
+fieldset{
+	border: none;
+	padding: 22px 0px;
+	margin: 0 auto;
+}
+
+form label {
+	text-transform: uppercase;
+	position:absolute;
+	top:0;
+	left:0;
+	font-family: 'Roboto Condensed',sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 4px;
+	transition: 0.2s ease;
+	-webkit-transition: 0.2s ease;
+	-moz-transition: 0.2s ease;
+	color: #9d9d9d;
+}
+
+form h5{
+	text-transform: uppercase;
+	font-family: 'Roboto Condensed',sans-serif;
+	font-size: 20px; 
+	color: #8BD0F0;
+}
+
+form input{
+	z-index:9;
+	color: #212121;
+	line-height: 9px;
+	position: relative;
+	display: block;
+	outline: none;
+	border: none;
+	background: none;
+	font-size: 20px;
+}
+
+form input:focus ~ label{
+	top:-13px;
+	font-size: 14px;
+	font-weight: 400;
+	
+}
+
+form input:valid ~ label{
+	color: green;
+	top:-13px;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+
+.input-container{
+	margin: 0px 50px 35px;
+	position: relative;
+	
+}
+
+
+.bar{
+	position: absolute;
+	left:0;
+	bottom: 0;
+	background: #9d9d9d;
+	width: 100%;
+	height:1px;
+	transition: background 0.3s ease;
+}
+
+
+
+
+.bar:before, .bar:after   {
+	content:'';
+	height:2px; 
+	width:0; 
+	position:absolute;
+	background:red; 
+	transition:0.3s ease all; 
+
+}
+.bar:before {
+	left:50%;
+}
+.bar:after {
+	right:50%; 
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+	width:50%;
+}
+
+.wrapper{
+	position: relative;
+	width: 50%;
+}
+
+.player1{
+	float: left;
+	top: -28px
+}
+
+.player2{
+	float: right;
+	top: -28px
+}
+
+form button{
+	cursor: pointer;
+	font-family: 'Roboto Condensed',sans-serif;
+	background: 0;
+	outline: none;
+	border: 1px solid red;
+	padding: 9px 32px;
+	font-size: 18px;
+	color: red;
+	border-radius: 3px;
+	transition: all 0.5s ease;
+}
+
+form button:hover{
+	color: white;
+	background: red;
+}
+
+.button-container{
+
+	text-align: right;
+	padding: 0px 50px;
+}
+
+#marketPlacePanel{
+	position: relative;
+	max-height: 40vh;
+    margin-top: 48px;
+	padding:0px 18px;
+}
+
+
+#marketPlaceList{
+	padding-left: 80px !important;
+}
+
+
+
+#marketPlaceList li{
+	
+	font-family: 'Verdana',sans-serif;
+	position: relative;
+	background: transparent;
+	display: inline-block;
+	width: 12%;
+    margin: 29px 43px;  
+
+}
+
+#marketPlaceList li img{
+	cursor: pointer;
+	width: 80%;
+	transition: all 0.3s;
+}
+
+#marketPlaceList li i{
+	cursor: pointer;
+	position: relative;
+	top: 5px;
+	color: black;
+}
+
+#marketPlaceList li p{
+	cursor: pointer;
+	display: inline;
+	position: relative;
+	    top: 9px;
+    left: 6px;
+	padding: 3px 7px;
+	border: 1px solid#FCC90B;
+	border-radius: 3px;
+	font-size: 12px;
+	color: black;
+	font-weight: 600;
+	background: #FCC90B;
+}
+
+
+#marketPlaceList li img:hover{	
+	transform: scale(1.1,1.1);
+}
+
+
+#priceNotice p{
+	cursor: pointer;
+	text-align: center;
+    font-family: "Roboto Condensed", sans-serif;
+    padding: 12px;
+    border: 1px solid green;
+    width: 50%;
+    color: white;
+    margin: 25px auto;
+    /* top: 18px; */
+    position: relative;
+    border-radius: 4px;
+    /* text-align: justify; */
+    box-shadow: 0px 0px 8px 0px green;
+    background: green;
+}
