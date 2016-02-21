@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response,render
 from django.template import RequestContext
-from django.http import HttpResponseRedirect,Http404,HttpResponse
+from django.http import HttpResponseRedirect,Http404,HttpResponse,JsonResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from checkmate.main.forms import *
 from django.db import IntegrityError
 import json
+from django.core import serializers
 
 def login(request):
 	if request.user.is_authenticated():
@@ -78,8 +79,8 @@ def question(request):
 
 	resp['score']=up.score
 	resp['qno']=q.no
-	json = json.dumps(resp)								#do simplejson if reqd
-	return HttpResponse(json, mimetype='application/json')			
+	data = serializers.serialize('json', [json.dumps(resp),])							#do simplejson if reqd
+	return JsonResponse(data, mimetype='application/json',safe=False)			
 	
 @login_required
 def main(request):
@@ -96,11 +97,12 @@ def rulebook(request):
 def leaderboard(request):
 	usrs=UserProfile.objects.order_by('score')[:25]
 	resp={}
-	for i in usrs:
-		resp[i.teamname]=i.score
+	for i in range(len(usrs)):
+		resp[i]['teamname']=usr[i].teamname
+		resp[i]['score']=usr[i].score
 
 	ret = json.dumps(resp)								#do simplejson if reqd
-	return HttpResponse(ret, mimetype='application/json')
+	return JsonResponse(ret, mimetype='application/json')
 
 @login_required
 def arena(request):
