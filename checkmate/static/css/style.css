@@ -288,8 +288,8 @@ body{
 
 #puzzlePieces li{
 	display: inline-block;
-	width: 16%;
-	border: 1px inset;
+	width: 80px;
+	min-height: 78px;
 	margin: 3px;
 	cursor: move;
 }
@@ -319,7 +319,8 @@ body{
 	position: relative;
 	background: transparent;
 	display: inline-block;
-	width: 22%;    
+	width: 22%;  
+	min-height: 80px;  
 	margin: 16px 3px;    
 
 }
@@ -451,27 +452,27 @@ body{
 
 
 .Content{
-	cursor: default;
-	position: relative;
-	margin: 0 auto;
-	width: 60vw;
-	height: 536px;
-	padding-top: 28px;
-	background-color: white;
-	top: 5vh;
-	box-shadow: 0px 0px 7px -2px;
-	border-radius: 2px;
+cursor: default;
+position: relative;
+margin: 0px auto;
+width: 60vw;
+height: 536px;
+padding-top: 16px;
+background-color: #FFF;
+top: -4vh;
+box-shadow: 0px 0px 7px -2px;
+border-radius: 2px;
 }
 
 .Content h4{
-	font-family: 'Roboto Condensed',sans-serif;
-	padding-left: 14px;
-	margin: 0px;
-	font-size: 27px;
-	border-left: 6px solid #FCC90B;
-	text-transform: uppercase;
-	color: #FCC90B;
-	letter-spacing: 0px;
+	font-family: "Roboto Condensed",sans-serif;
+padding-left: 14px;
+margin: 0px;
+font-size: 27px;
+border-left: 6px solid #FCC90B;
+text-transform: uppercase;
+color: #FCC90B;
+letter-spacing: 0px;
 }
 
 .close,#gotoMarket{
@@ -704,4 +705,18 @@ form button:hover{
     /* text-align: justify; */
     box-shadow: 0px 0px 8px 0px green;
     background: green;
+}
+
+
+#rulebookLink{
+	font-family: Roboto Condensed; 
+	color: rgb(46, 142, 203);
+	 margin: 0px 21px;
+	  font-size: 14px;
+	cursor:pointer;
+	width: 43%;
+}
+
+#rulebookLink:hover{
+	text-shadow: 0px 0px 0.5px #2E8ECB;
 }

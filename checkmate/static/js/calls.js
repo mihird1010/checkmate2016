@@ -6,19 +6,8 @@ function get_question(id,callback){
 	$.ajax({
 	type: 'GET',
 	url: '/api/get-question/'+id+'/',
-	statusCode: {
-	      404: function (response) {
-	      	var x = {
-	      		"qno": id,
-	      		"title": 'invalid',
-	      		'text': 'No data received'
-	      	};
-			callback(x);
-			return;
-	      }
-	   },
 	success: function(response){
-		callback(response);
+		$('.question_div').html(response.question);
 	}
 	});
 }

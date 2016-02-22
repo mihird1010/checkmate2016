@@ -202,7 +202,7 @@ $(':submit').click(function(){
 	$.ajax({
 	type:'POST',
 	url:'/question/',
-	data: { 'no': qNumber , 'answer': $('#submitBox').val() },
+	data: { 'no': qNumber , 'answer': $('#submitBox').val() }
 	success : function(response){
 	console.log($.parseJSON(response).status);
 	}

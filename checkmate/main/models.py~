@@ -20,11 +20,12 @@ class Question(models.Model):
 class UserProfile(models.Model):
 	user=models.OneToOneField(User) #extending user model
 	score=models.IntegerField(default=0)
-	pipe_inventory=models.CharField(default='0,0,0,0,0,0,0')
+	pipe_inventory=models.CharField(default='0,0,0,0,0,0,0',max_length=100)
 	pipestring=models.CharField(max_length=30)
 	active_side=models.CharField(default="R",max_length=30)
 	active_x=models.CharField(default="1",max_length=30)
 	active_y=models.CharField(default="0",max_length=30)
+	teamname=models.CharField(max_length=200)
 	name1=models.CharField(max_length=200)
 	name2=models.CharField(max_length=200,blank=True,null=True)
 	phone1=models.BigIntegerField(null=True)

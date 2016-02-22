@@ -5,12 +5,7 @@ from checkmate.main.models import *
 
 class AnswerForm(forms.Form):
 	answer=forms.CharField()
-	dd=forms.BooleanField(required=False)
-
-class MarketForm(forms.Form):
-	flip=forms.IntegerField(initial=0,min_value=0)
-	dd=forms.IntegerField(initial=0,min_value=0)
-
+	
 class LoginForm(forms.Form):
 	username = forms.CharField(max_length = 50)
 	password=forms.CharField(widget=forms.PasswordInput())

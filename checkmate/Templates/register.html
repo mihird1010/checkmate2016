@@ -1,18 +1,104 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+	<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+	<script src="{% static "js/jquery.min.js" %}"></script>
+	<title>Register | Checkmate 2016</title>
 </head>
 <body>
-    <h1>register</h1>
-    
-    <form action="" method="post">
-        <table>
-            {{ form.as_table }}
-        </table>
-        {% csrf_token %}
-		<input type="submit" value="submit" name="Submit">
-		
-    </form>
-<a href="/login/">login</a>
+<div id="loginPage">
+<a href="/login" style="text-decoration: none;">
+	<div class='Content' style="cursor:pointer;height: 59px !important;
+width: 58vw !important;
+top: 1vh;
+padding-top: 16px;">
+    <h4>Login</h4></div>
+    </a>
+    {% if message %}
+            <script type="text/javascript">
+            alert('{{message}}');</script>
+    {% endif %}
+	<div class='Content'>
+	<h4>Register</h4>
+	<form id="register" name="RegistrationForm" action="" onsubmit="return validateForm()" method="POST">	
+		<fieldset>
+		<div class="wrapper" style="margin: 0 auto">
+		<div class="input-container">			
+			<input type='text' name="username" required>
+			<label for="username">Team Name</label>
+			<div class='bar'></div>
+		</div>
+		</div>
+		<div class="wrapper player1">
+		<div class="input-container">
+		<h5>Player 1</h5>
+		</div>
+		<div class="input-container">
+			<input type='text' name="name1" required>
+			<label for="name1">Name</label>
+			<div class='bar'></div>
+		</div>
+		<div class="input-container">
+			<input type='text' name="email1" required>
+			<label for="email1">Email Id</label>
+			<div class='bar'></div>
+		</div>
+
+		<div class="input-container">		
+			<input type='text' name="phone1" required>
+			<label for="phone1">Contact</label>
+			<div class='bar'></div>
+		</div>
+		</div>
+		<div class=" wrapper player2">
+		<div class="input-container">
+			<h5>Player 2</h5>		
+		</div>
+		<div class="input-container">	
+			<input type='text' name="name2" >
+			<label for="name2">Name</label>
+			<div class='bar'></div>
+		</div>
+		<div class="input-container">
+			<input type='text' name="email2" >
+			<label for="email2">Email Id</label>
+			<div class='bar'></div>
+		</div>
+		<div class="input-container">
+			<input type='text' name="phone2" >
+			<label for="phone2">Contact</label>
+			<div class='bar'></div>
+		</div>
+		</div>
+		<div class="wrapper" style="margin: 0 auto;clear: both;">
+		<div class="input-container" >
+			<input type='password' name="password" >
+			<label for="password">Password</label>
+			<div class='bar'></div>
+		</div>
+		</div>
+		<div class="button-container">
+		<input type="submit" >Sign Up</input>
+		</div>
+		</fieldset>
+	</form>
+	</div>
+</div>
+
+<!--<script type="text/javascript">
+	$('#signup').click(function (event){
+		$.ajax({
+			url: '/register/',
+			type: 'POST',
+			dataType: 'json',
+			data: $('#register').serialize(),
+			success:  function(response){
+				console.log(response);
+			}
+		})
+	});
+</script> -->
 </body>
 </html>

@@ -15,9 +15,10 @@ urlpatterns = patterns('',
     url(r'^$',main,name='main'),
     url(r'^question/$',question,name='question'),
     url(r'^login/$',login,name='login'),
- #   url(r'^rulebook/$',rulebook,name='rulebook'),
+    url(r'^rulebook/$',rulebook,name='rulebook'),
     #url(r'^transition/$',transition,name='transition'),
-    url(r'^arena/$',market,name='arena'),
+    url(r'^arena/$',arena,name='arena'),
+    #url(r'^leaderboard/$',leaderboard,name='leaderboard/'),
     url(r'^logout/$',logout,name='logout'),
     url(r'^register/$',register,name='register'),
 )
@@ -41,9 +42,10 @@ if DEBUG:
                                 {'document_root': MEDIA_ROOT}))
     del(_media_url, serve)
 
-if settings.DEBUG:
+'''if settings.DEBUG:
     urlpatterns += patterns(
         'django.views.static',
         (r'media/(?P<path>.*)',
         'serve',
         {'document_root': settings.MEDIA_ROOT}), )
+'''

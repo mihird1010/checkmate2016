@@ -32,8 +32,8 @@ class UserProfile(models.Model):
 	phone2=models.BigIntegerField(blank=True,null=True)
 	email1=models.EmailField()
 	email2=models.EmailField(blank=True,null=True)
-	qa=models.ManyToManyField(Question,related_name='qa') #storing list of questions attempted
+	qa=models.CharField(max_length=100) #storing list of questions attempted
 	def __unicode__(self):
-		return self.user.teamname
+		return self.user.username
 		
 

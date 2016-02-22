@@ -2,68 +2,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
 	<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+	<script src="{% static "js/jquery.min.js" %}"></script>
 	<title>Login | Checkmate 2016</title>
 </head>
 <body>
 <div id="loginPage">
-	<div class='Content' style="height: 10px !important;
-    width: 58vw !important;
-    padding: 0;"></div>
-	<div class='Content'>
+	<a href="/register" style="text-decoration: none;">
+	<div class='Content' style="cursor:pointer;height: 59px !important;
+width: 25vw !important;
+top: 14vh;
+padding-top: 16px;">
+    <h4>Register</h4></div></a>
+	<div class='Content' style="width: 30vw; height: 55vh; top: 10vh;">
 	<h4>Login</h4>
-	<form>	
+	<form style="margin: 40px 0px;" autocomplete="on" method="POST" action="">	
 		<fieldset>
-		<div class="wrapper" style="margin: 0 auto">
+		<div class="wrapper" style="margin: 0 auto;width: 80%;">
 		<div class="input-container">			
-			<input type='text' name="teamName" required>
-			<label for="teamName">Team Name</label>
+			<input type='text' name="username" required>
+			<label for="username">Team Name</label>
 			<div class='bar'></div>
 		</div>
 		</div>
-		<div class="wrapper player1">
-		<div class="input-container">
-		<h5>Player 1</h5>
-		</div>
-		<div class="input-container">
-			<input type='text' name="name-1" required>
-			<label for="name-1">Name</label>
-			<div class='bar'></div>
-		</div>
-		<div class="input-container">
-			<input type='text' name="email-address-1" required>
-			<label for="email-address-1">Email Id</label>
-			<div class='bar'></div>
-		</div>
-
-		<div class="input-container">		
-			<input type='tel' name="contact-1" required>
-			<label for="contact-1">Contact</label>
-			<div class='bar'></div>
-		</div>
-		</div>
-		<div class=" wrapper player2">
-		<div class="input-container">
-			<h5>Player 2</h5>		
-		</div>
-		<div class="input-container">	
-			<input type='text' name="name-2" required>
-			<label for="name-2">Name</label>
-			<div class='bar'></div>
-		</div>
-		<div class="input-container">
-			<input type='text' name="email-address-2" required>
-			<label for="email-address-2">Email Id</label>
-			<div class='bar'></div>
-		</div>
-		<div class="input-container">
-			<input type='tel' name="contact-2" required>
-			<label for="contact-2">Contact</label>
-			<div class='bar'></div>
-		</div>
-		</div>
-		<div class="wrapper" style="margin: 0 auto;clear: both;">
+	
+		<div class="wrapper" style="margin: 0 auto;clear: both;width: 80%;">
 		<div class="input-container" >
 			<input type='password' name="password" required>
 			<label for="password">Password</label>
@@ -71,10 +35,11 @@
 		</div>
 		</div>
 		<div class="button-container">
-		<button type="submit" onclick="console.log(form)">Sign Up</button>
+		<button type="submit" onclick="console.log(form)">Sign In</button>
 		</div>
 		</fieldset>
 	</form>
+	<h3 id="rulebookLink"> > Download the rulebook</h3>
 	</div>
 </div>
 

@@ -43,30 +43,48 @@ def login(request):
 
 @login_required
 def question(request):
-	if request.method== "POST":
-		no = int(request.POST.get('no',-1))
+	#return HttpResponse("asdf")
+	if request.method== "POST" :
+		#if is_instance(request.POST.get('no'),int)
+		no = int(request.POST.get('no'))
+		print no
+	else:
+		raise Http404
+	
+		
 	#if request.method== "GET":
 	#	no=int(request.GET.get['no'])
 	u=request.user
 	try:
 		up=UserProfile.objects.get(user=u)
-	except ObjectDoesNotExist:
-		raise Http404
-	try:
-		ques=Question.objects.get(no=no)
+		
 	except:
 		raise Http404
+		
+		
+	try:
+		ques=Question.objects.get(no=no)
+	
+	except:
+		raise Http404
+		
+		
 	resp={}
 	resp['status']=1
 	if request.method=="POST" and 'answer' in request.POST:
 		data=request.POST
-		qas=up.qas	#.filter
-		for i in qas:
-			if no==i.no:
-				resp['status']=0
-				break
+		if len(up.qa)>1:
+			qas=up.qa[:-1].split(',')	#.filter
+			for i in qas:
+				if no==i:
+					resp['status']=-1
+					break
+		if 	resp['status']==1:
+			up.qa+=str(no)
+			up.qa+=","
+			
+		
 		if data['answer'].lower()==ques.answer and resp['status']==1:
-			up.qa.add(ques)
 			if ques.difficulty==1:
 				up.score+=50
 			elif ques.difficulty==2:
@@ -76,46 +94,59 @@ def question(request):
 		elif data['answer'].lower()!=ques.answer:
 											#deduct points for wrong answer
 			resp['status']=0
-
-	resp['score']=up.score
-	resp['qno']=q.no
-	data = serializers.serialize('json', [json.dumps(resp),])							#do simplejson if reqd
-	return JsonResponse(data, mimetype='application/json',safe=False)			
+			
+	else:
+		resp['content']=ques.content
+		resp['score']=up.score
+		resp['qno']=ques.no
+		resp['quesatt']=up.qa
+	
+	data = json.dumps(resp)			
+	print data			#do simplejson if reqd
+	return JsonResponse(data,safe=False)			
 	
 @login_required
 def main(request):
 	u=request.user
 	up=UserProfile.objects.get(user=u)
-	eqset=Question.objects.filter(difficulty=1)
-	mqset=Question.objects.filter(difficulty=2)
-	dqset=Question.objects.filter(difficulty=3)
-	return render_to_response('index.html', {'eqset':eqset,'mqset':mqset,'dqset':dqset,'up':up},context_instance=RequestContext(request))
+	return render_to_response('index.html', {'up':up},context_instance=RequestContext(request))
 
 def rulebook(request):
 	 return render_to_response('rulebook.html',context_instance=RequestContext(request))
 
-def leaderboard(request):
-	usrs=UserProfile.objects.order_by('score')[:25]
+'''def leaderboard(request):
+	try: 
+		usrs=UserProfile.objects.order_by('score')[:25]
+	except 
 	resp={}
 	for i in range(len(usrs)):
-		resp[i]['teamname']=usr[i].teamname
-		resp[i]['score']=usr[i].score
+		resp[i]['teamname']=usrs[i].teamname
+		resp[i]['score']=usrs[i].score
 
-	ret = json.dumps(resp)								#do simplejson if reqd
-	return JsonResponse(ret, mimetype='application/json')
-
+	data = json.dumps(resp)								#do simplejson if reqd
+	return JsonResponse(data,safe=False)
+'''
 @login_required
 def arena(request):
-	u=request.user
-	up=UserProfile.objects.get(user=u)
-	return render_to_response('arena.html', {'inventory':up.pipe_inventory,'score':up.score}, context_instance=RequestContext(request))
-	
+	data={}
+	try:
+		u=request.user
+		up=UserProfile.objects.get(user=u)
+		data['inventory']=up.pipe_inventory
+		data['score']=up.score
+	except:
+		raise Http404
+		
+	return JsonResponse(data,safe=False)
 
 @login_required
 def buy(request):
 	pipe=request.pipe
-	up=request.user
-	u=UserProfile.objects.get(user=u)
+	try:
+		up=request.user
+		u=UserProfile.objects.get(user=u)
+	except :
+		raise Http404
 	inv=up.pipe_inventory.split(',')
 	up.pipe_inventory[pipe]+=1
 	
@@ -127,8 +158,8 @@ def buy(request):
 	
 	resp['inventory']=up.pipe_inventory
 	resp['score']=u.score
-	json = json.dumps(resp)								#do simplejson if reqd
-	return HttpResponse(json, mimetype='application/json')
+	data = json.dumps(resp)								#do simplejson if reqd
+	return JsonResponse(data, safe=False)
 	
 	
 @login_required
@@ -141,21 +172,22 @@ def register(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect('/main/')
 	if request.POST:
-
 		form=RegistrationForm(request.POST)
+		#a=form.cleaned_data
+		print form
 		if form.is_valid():
-			
 			data=form.cleaned_data
+			print data
 			u=User()
 			up=UserProfile()
 			u.username=data['username']
 			u.set_password(data['password'])
-			u.email=data['email1']
 			try:
 				u.save()
 			except IntegrityError:
 				m='Username already exists'
-				return render_to_response('REGIShtml.html',{'message':m},context_instance=RequestContext(request))
+				return render_to_response('register.html',{'message':m},context_instance=RequestContext(request))
+			up.teamname=data['username']
 			up.name1=data['name1']
 			up.name2=data['name2']
 			up.phone1=data['phone1']
@@ -166,10 +198,10 @@ def register(request):
 			up.save()
 			return HttpResponseRedirect('/login/')
 		else:
-			return render_to_response('REGIShtml.html',{'message':m},context_instance=RequestContext(request))
+			return render_to_response('register.html',{'message':m},context_instance=RequestContext(request))
 	else:
 		form=RegistrationForm()
-		return render_to_response('REGIShtml.html',{'form':form},context_instance=RequestContext(request))
+		return render_to_response('register.html',{'form':form},context_instance=RequestContext(request))
 
 @login_required
 def validate(request):
@@ -197,8 +229,9 @@ def validate(request):
 			up.score +=500
 	r['score']=up.score
 	r['inventory']=up.pipe_inventory
-	json = json.dumps(resp)								#do simplejson if reqd
-	return HttpResponse(json, mimetype='application/json')
+	data = json.dumps(resp)								#do simplejson if reqd
+	return JsonResponse(data,safe=False)
+
 
 def check_success(s,i,j,ent,desti,destj,destent):
 	"Checks the array to contain pipe path from start to end"
