@@ -13,7 +13,7 @@
 <div id="scorePanel" style="position: fixed;">
 	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Team: </p><p id="teamName" style="font-size: 16px;">{{ up }}</p>
 
-	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Score: </p><p id="score" style="font-size: 16px;">3000</p>
+	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Points: </p><p id="points" style="font-size: 16px;">0</p>
 	<a href="/logout/" style="text-decoration: none"><p style="color:black;font-family: 'Gtek',sans-serif;text-transform: lowercase;">Logout</p></p></a>
 </div>
 
@@ -27,21 +27,27 @@
 </section>
 <section class="mainContent">
 	<div id="questionSection">
-	<div id="qNo"><h1> </h1></div>
+	<div id="qNo"><h1> 1</h1></div>
 		<div id="questionContainer">
-			
+				First Question
 			<h3></h3>
 		</div>
 	</div>
 
 	<div id="submitArea">
+
 		<h4>Submit Your Answer</h4>
 		<div id="submitInner">
 		<input type="text" id="submitBox">
 		<button type="submit" id="submitButton">SUBMIT</button>
 		</div>
+		<h5 id="wrongAnswer" style="
+    margin: 11px 12px;
+color: red;
+font-family: Arial;"></h5>
 	</div>
 </section>
+
 <section class="modal submission">
 </section>
 <section class="modal submission">
@@ -55,6 +61,11 @@
 		</div>
 	</div>
 </section>
+
+
+
+
+
 <section class="modal mktPlace" >
 </section>
 <section class="modal mktPlace">
@@ -91,6 +102,7 @@
     padding-bottom: 11px;">
 			
 		</ul>
+	<button type="submit" id="validateButton">VALIDATE</button>
 	</section>
 </div>
 <script type="text/javascript">
@@ -110,21 +122,38 @@
 	function puzzleListF(){
 		for(var i=1;i<=25;i++){
 			$('#puzzlePieces').append("<li id= p"+i+"></li>");
-			if($( "#p"+i+"" ).has( "img" ).length==0)
-			$( "#p"+i+"" ).attr({ondrop:'drop(event)',ondragover:'allowDrop(event)'});
+			
 		}
+
+
 	}
 
 	var inventoryDiv= document.getElementById('inventoryList');
 	function inventoryListF(){
-		for(var i=1;i<=7;i++){
-			$('#inventoryList').append("<li id= pi"+i+" ondrop='drop(event)' ondragover='allowDrop(event)'><img src='{% static 'img/piece.png' %}'  draggable='true' ondragstart='drag(event)' ondragend='dragend(event,"+i+")' id=pisc"+i+" ><i class='fa fa-cart-plus'></i><p id= pno"+i+" >3</p></li>");
+		for(var i=1;i<=6;i++){
+			$('#inventoryList').append("<li id= pi"+i+" ondrop='drop(event)' ondragover='allowDrop(event)'><img draggable='true' ondragstart='drag(event)' ondragend='dragend(event)' id=inp"+i+" ><i class='fa fa-cart-plus'></i><p id= pno"+i+" >0</p></li>");
+			switch(i){
+				case 1:$('#pi'+i+' img').attr('src','{% static 'img/piece1.png' %}');break;
+				case 2:$('#pi'+i+' img').attr('src','{% static 'img/piece2.png' %}');break;
+				case 3:$('#pi'+i+' img').attr('src','{% static 'img/piece3.png' %}');break;
+				case 4:$('#pi'+i+' img').attr('src','{% static 'img/piece4.png' %}');break;
+				case 5:$('#pi'+i+' img').attr('src','{% static 'img/piece5.png' %}');break;
+				case 6:$('#pi'+i+' img').attr('src','{% static 'img/piece6.png' %}');break;
+			}
 		}
 	}
 
 	function marketListF(){
-		for(var i=1;i<=7;i++){
-			$('#marketPlaceList').append("<li id= pim"+i+"><img src='{% static 'img/piece.png' %}'><i class='fa fa-cart-plus'></i><p>Buy</p></li>");
+		for(var i=1;i<=6;i++){
+			$('#marketPlaceList').append("<li id= pim"+i+"><img><i class='fa fa-cart-plus'></i><p>Buy</p></li>");
+			switch(i){
+				case 1:$('#pim'+i+' img').attr('src','{% static 'img/piece1.png' %}');break;
+				case 2:$('#pim'+i+' img').attr('src','{% static 'img/piece2.png' %}');break;
+				case 3:$('#pim'+i+' img').attr('src','{% static 'img/piece3.png' %}');break;
+				case 4:$('#pim'+i+' img').attr('src','{% static 'img/piece4.png' %}');break;
+				case 5:$('#pim'+i+' img').attr('src','{% static 'img/piece5.png' %}');break;
+				case 6:$('#pim'+i+' img').attr('src','{% static 'img/piece6.png' %}');break;
+			}
 		}
 	}
 	marketListF();
@@ -146,6 +175,12 @@ function dragend(ev,i){
 
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
+    for(var i=1;i<=25;i++){
+    if($('#p'+i).has( "img" ).length==0)
+				$('#p'+i).attr({ondrop:'drop(event)',ondragover:'allowDrop(event)'});
+			else
+				$('#p'+i).attr({ondrop:'',ondragover:''});
+		}
 }
 
 function drop(ev) {
@@ -156,8 +191,11 @@ function drop(ev) {
 		if(parseInt(document.getElementById(data).nextSibling.nextSibling.innerHTML)>0)
 		{
 		document.getElementById(data).nextSibling.nextSibling.innerHTML=parseInt(document.getElementById(data).nextSibling.nextSibling.innerHTML)-1;
+		//note
 	    var nodeCopy = document.getElementById(data).cloneNode(true);
-   		nodeCopy.data = "newId";
+	    var num=nodeCopy.id.substring(3);
+	    console.log(num);
+   		nodeCopy.id = "ppi"+num;
    		ev.target.appendChild(nodeCopy);}
    	}
 
@@ -171,13 +209,9 @@ function drop(ev) {
 
 
 <script type="text/javascript">
-	
-var qsList=[
-	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
-	"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-	"ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."];
 
-var qNumber;
+
+var qNumber=1;
 var qNos=$('#questionList li');
 qNos.click(function(){
 	$('#questionSection').animate({left:'-65vw'},1000);
@@ -187,8 +221,7 @@ qNos.click(function(){
 		type:'POST',
 		url: '/question/',
 		data:{ 'no' : qNumber },
-		success: function(response){
-		var obj=$.parseJSON(response);
+		success: function(obj){
 		console.log(obj);
 		setTimeout(function(){$('#qNo h1').html(obj.qno);
 	$('#questionContainer h3').html(obj.content);},1000);
@@ -202,14 +235,51 @@ $(':submit').click(function(){
 	$.ajax({
 	type:'POST',
 	url:'/question/',
-	data: { 'no': qNumber , 'answer': $('#submitBox').val() }
+	data: { 'no': qNumber , 'answer': $('#submitBox').val() },
 	success : function(response){
-	console.log($.parseJSON(response).status);
+		console.log(response);
+		var qsar=response.quesatt.split(',');
+			console.log(qsar);
+			console.log(1);
+			var arr=new Array();
+			for(var i=1;i<=25;i++)
+			{
+				var f=0;
+				for(var j=0;j<qsar.length;j++)
+				{
+					if(parseInt(qsar[j])==i)
+						f++;
+				}
+				arr.push(f);
+
+			}
+			console.log(arr);
+			if(arr[qNumber-1]>1)
+			{
+				$('#q'+qNumber).addClass('disabled');
+				if(arr[qNumber-1]>=1)
+					return;
+			}
+		if(parseInt(response.status)==0)	
+			$("#wrongAnswer").html("Incorrect Answer");
+		else if(parseInt(response.status)==-1)
+			$("#wrongAnswer").html("Already submited");
+		else if(parseInt(response.status)==1)
+		{
+			
+			$('#q'+qNumber).addClass('disabled');
+			$("#wrongAnswer").html("");
+	$('#Qpoints').html(50*parseInt(response.diff));
+	$('#points').html(parseInt(response.score));
+	$('.submission').fadeIn();
+			$('.modalContent').animate({top: '30vh'},1000);
+		}
 	}
 	});
-	$('.submission').fadeIn();
-	$('.modalContent').animate({top: '30vh'},1000);
+	
+
 });
+	
 
 $('#gotoMarket').click(function(){
 	$('.mktPlace').css('top','0vh');
@@ -236,7 +306,75 @@ $('.mktPlace').click(function() {
 	$('.modalContent').animate({top: '20vh'},1000);
   });
 */
-</script>
 
+
+$("#marketPlaceList li p").click(function(){
+	var pieceType=$(this).parent().attr('id').substring(3);
+	var obj=new Object();
+	obj.pieceType=pieceType;
+	obj.points=parseInt($("#points").html());
+	obj.noOfPieces=parseInt($('#pno'+pieceType).html());
+	var data=JSON.stringify(obj);
+	
+	$.ajax({
+		type:'POST',
+		url: '',
+		data:data,
+		success: function(response){;
+			$('#pno'+pieceType).html(response.noOfPieces);
+			$("#points").html(response.points);
+			alert("Selected Piece added to inventory");
+		}
+
+	});
+});
+	//puzzle validation
+	$("#validateButton").click(function(){
+		var puzzleArray = new Array();
+		var arrayImg=$("#puzzlePieces li").has("img");
+		for(var a=0;a<25;a++)
+		{
+			var obj= new Object();
+			f=0;
+			obj.row=Math.floor(a/5);
+			obj.column=a%5;
+			for(var b=0;b<arrayImg.length;b++){
+				if(parseInt(arrayImg[b].id.substring(1))==a){
+					f=1;
+					obj.status=1;
+					obj.pieceType=parseInt(arrayImg[b].firstChild.id.substring(3));					
+					break;
+				}
+			}
+			if(f==0)
+			{
+				obj.status=0;
+				obj.pieceType=-1;
+			}
+			puzzleArray.push(obj);
+		}
+		var data=JSON.stringify(puzzleArray);
+		console.log(data);
+		$.ajax({
+			type:'POST',
+			url:'',
+			data: data,
+			success: function(response){
+
+			}
+		});
+
+	});
+</script>
 </body>
+<!--
+submit answer call
+validation call
+dec by 1 can this be changed by smeone
+http://www.w3schools.com/js/js_validation.asp
+send the inventory list and match from backend if true update store and send inventory
+same for points - submit answer and points verify from backend if true update store and send status and new points
+send difficulty also
+-->
 </html>
+

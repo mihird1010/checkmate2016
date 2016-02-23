@@ -44,10 +44,9 @@ def login(request):
 @login_required
 def question(request):
 	#return HttpResponse("asdf")
-	if request.method== "POST" :
+	if request.method=="POST" :
 		#if is_instance(request.POST.get('no'),int)
 		no = int(request.POST.get('no'))
-		print no
 	else:
 		raise Http404
 	
@@ -57,58 +56,58 @@ def question(request):
 	u=request.user
 	try:
 		up=UserProfile.objects.get(user=u)
-		
-	except:
+	except DoesNotExist:
 		raise Http404
-		
-		
 	try:
 		ques=Question.objects.get(no=no)
-	
 	except:
-		raise Http404
-		
-		
+		raise Http404		
 	resp={}
 	resp['status']=1
 	if request.method=="POST" and 'answer' in request.POST:
 		data=request.POST
-		if len(up.qa)>1:
-			qas=up.qa[:-1].split(',')	#.filter
+		#if len(up.qa)>1:
+		if up.qa is not None:
+			qas=up.qa.split(',')	
+		#print qas	#.filter
 			for i in qas:
-				if no==i:
+				if str(no)==str(i):
 					resp['status']=-1
 					break
-		if 	resp['status']==1:
-			up.qa+=no
-			up.qa+=","
-			
+		#print resp['status']
 		
-		if data['answer'].lower()==ques.answer and resp['status']==1:
-			if ques.difficulty==1:
-				up.score+=50
-			elif ques.difficulty==2:
-				up.score+=100
-			elif ques.difficulty==3:
-				up.score+=150
-		elif data['answer'].lower()!=ques.answer:
-											#deduct points for wrong answer
-			resp['status']=0
-			
+		if 	resp['status']==1 or resp['status']==0:
+			up.qa+=str(no)
+			up.qa+=","
+			up.save()
+	
+			if data['answer'].lower()==ques.answer and resp['status']==1:
+				if ques.difficulty==1:
+					up.score+=50
+				elif ques.difficulty==2:
+					up.score+=100
+				elif ques.difficulty==3:
+					up.score+=150
+			elif data['answer'].lower()!=ques.answer:
+												#deduct points for wrong answer
+				resp['status']=0
+		
 	else:
 		resp['content']=ques.content
 		resp['score']=up.score
 		resp['qno']=ques.no
-		resp['quesatt']=up.qa
-	
-	data = json.dumps(resp)			
+		resp['diff']=ques.difficulty
+	resp['quesatt']=up.qa
+	data = json.dumps(resp,indent=4)
 	print data			#do simplejson if reqd
-	return JsonResponse(data,safe=False)			
-	
+	return HttpResponse(data,content_type='json')			
 @login_required
 def main(request):
 	u=request.user
-	up=UserProfile.objects.get(user=u)
+	try:
+		up=UserProfile.objects.get(user=u)
+	except:
+		raise Http404
 	return render_to_response('index.html', {'up':up},context_instance=RequestContext(request))
 
 def rulebook(request):
@@ -128,17 +127,18 @@ def rulebook(request):
 '''
 @login_required
 def arena(request):
-	data={}
+	resp={}
 	try:
 		u=request.user
 		up=UserProfile.objects.get(user=u)
-		data['inventory']=up.pipe_inventory
-		data['score']=up.score
+		resp['inventory']=up.pipe_inventory
+		resp['score']=up.score
 	except:
 		raise Http404
-		
-	return JsonResponse(data,safe=False)
-
+	data = json.dumps(resp,indent=4)
+	#print data			#do simplejson if reqd
+	return HttpResponse(data,content_type='json')
+	
 @login_required
 def buy(request):
 	pipe=request.pipe
@@ -158,8 +158,9 @@ def buy(request):
 	
 	resp['inventory']=up.pipe_inventory
 	resp['score']=u.score
-	data = json.dumps(resp)								#do simplejson if reqd
-	return JsonResponse(data, safe=False)
+	data = json.dumps(resp,indent=4)
+	#print data			#do simplejson if reqd
+	return HttpResponse(data,content_type='json')			
 	
 	
 @login_required
@@ -229,8 +230,10 @@ def validate(request):
 			up.score +=500
 	r['score']=up.score
 	r['inventory']=up.pipe_inventory
-	data = json.dumps(resp)								#do simplejson if reqd
-	return JsonResponse(data,safe=False)
+	
+	data = json.dumps(r,indent=4)
+	#print data			#do simplejson if reqd
+	return HttpResponse(data,content_type='json')			
 
 
 def check_success(s,i,j,ent,desti,destj,destent):

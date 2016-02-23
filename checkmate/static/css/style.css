@@ -200,7 +200,7 @@ body{
 	margin: 5px 15px;
 }
 
-#submitButton {
+#submitButton,#validateButton{
 	cursor: pointer;
 	position: relative;
 	left: 32px;
@@ -607,7 +607,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
 	top: -28px
 }
 
-form button{
+form input[type="submit"]{
 	cursor: pointer;
 	font-family: 'Roboto Condensed',sans-serif;
 	background: 0;
@@ -620,7 +620,7 @@ form button{
 	transition: all 0.5s ease;
 }
 
-form button:hover{
+form input[type="submit"]:hover{
 	color: white;
 	background: red;
 }
@@ -719,4 +719,9 @@ form button:hover{
 
 #rulebookLink:hover{
 	text-shadow: 0px 0px 0.5px #2E8ECB;
+}
+
+.disabled{
+    pointer-events:none;
+    opacity:0.4;
 }
