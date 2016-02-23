@@ -20,7 +20,7 @@ class Question(models.Model):
 class UserProfile(models.Model):
 	user=models.OneToOneField(User) #extending user model
 	score=models.IntegerField(default=0)
-	pipe_inventory=models.CharField(default='0,0,0,0,0,0,0',max_length=100)
+	pipe_inventory=models.CharField(default='0,0,0,0,0,0',max_length=100)
 	pipestring=models.CharField(max_length=30,blank=True)
 	active_side=models.CharField(default="R",max_length=30)
 	active_x=models.CharField(default="1",max_length=30)
@@ -33,7 +33,9 @@ class UserProfile(models.Model):
 	email1=models.EmailField()
 	email2=models.EmailField(blank=True,null=True)
 	qa=models.CharField(max_length=100,blank=True,null=True,default="0") #storing list of questions attempted
-	#qa=models.ForeignKey(Question)
+	#idno1=models.CharField(max_length=20)
+	#idno1=models.CharField(max_length=20,blank=True)
+	
 	def __unicode__(self):
 		return self.user.username
 		

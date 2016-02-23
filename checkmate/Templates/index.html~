@@ -13,7 +13,7 @@
 <div id="scorePanel" style="position: fixed;">
 	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Team: </p><p id="teamName" style="font-size: 16px;">{{ up }}</p>
 
-	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Points: </p><p id="points" style="font-size: 16px;">0</p>
+	<p style="font-family: 'Gtek',sans-serif;text-transform: lowercase;">Points: </p><p id="points" style="font-size: 16px;">{{up.score}}</p>
 	<a href="/logout/" style="text-decoration: none"><p style="color:black;font-family: 'Gtek',sans-serif;text-transform: lowercase;">Logout</p></p></a>
 </div>
 
@@ -27,10 +27,10 @@
 </section>
 <section class="mainContent">
 	<div id="questionSection">
-	<div id="qNo"><h1> 1</h1></div>
+	<div id="qNo"><h1> </h1></div>
 		<div id="questionContainer">
-				First Question
-			<h3></h3>
+				
+			<h3>Select a question from right</h3>
 		</div>
 	</div>
 
@@ -85,6 +85,18 @@ font-family: Arial;"></h5>
 		</div>
 	</div>
 </section>
+
+<section class="modal completion" style="position: fixed;">
+</section>
+<section class="modal completion" style="position: fixed;">
+	<div class="modalContent">
+		<h1>congrats </h1>
+		<h6>You have completed the game successfully</h6>
+		<p>Score: <span id="Qpoints">{{ up.score }}</span> points </p>
+	</div>
+</section>
+
+
 </div>
 
 <div id="puzzlePage">
@@ -106,6 +118,8 @@ font-family: Arial;"></h5>
 	</section>
 </div>
 <script type="text/javascript">
+
+
 	var questDiv= document.getElementById('questionList');
 	function questionListF(){
 		for(var i=1;i<=30;i++){
@@ -117,6 +131,32 @@ font-family: Arial;"></h5>
 				$('#questionList').append("<li id= q"+i+" style='border-top:9px solid red'>"+(i<10?("0"+i):i)+"</li>");
 		}
 	}
+	
+ window.onload = function (){	
+ 		$('#qNo').hide();
+		var arr="{{ up.qa }}".split(',');
+		var inv="{{ up.pipe_inventory}}".split(',');
+		console.log(inv);
+		var first=1;
+		for(var a=1;a<=25;a++){
+			console.log(1);
+			var f=0;
+			for(var b=0;b<arr.length-1;b++)
+			{
+				if(parseInt(arr[b])==a){
+					f++;
+				}
+			}
+			if(f>=1)
+			{
+				$('#q'+a).addClass('disabled');
+			}
+		}
+		
+		for(var i=1;i<=6;i++){
+			$('#pno'+i).html(inv[i-1]);
+		}
+};
 
 	var puzzleDiv= document.getElementById('puzzlePieces');
 	function puzzleListF(){
@@ -211,12 +251,15 @@ function drop(ev) {
 <script type="text/javascript">
 
 
-var qNumber=1;
+var qNumber;
 var qNos=$('#questionList li');
 qNos.click(function(){
+	$("#qNo").show();
+	$("#wrongAnswer").html("");
 	$('#questionSection').animate({left:'-65vw'},1000);
 	var getId=$(this).attr('id');
-	qNumber=getId.substring(1);
+	qNumber=getId.substring(1)
+	console.log(qNumber);
 	$.ajax({
 		type:'POST',
 		url: '/question/',
@@ -232,15 +275,26 @@ qNos.click(function(){
 });	
 
 $(':submit').click(function(){
+	if(qNumber==undefined){
+		$("#wrongAnswer").html("Select a question");
+		return;
+	}
 	$.ajax({
 	type:'POST',
 	url:'/question/',
 	data: { 'no': qNumber , 'answer': $('#submitBox').val() },
 	success : function(response){
 		console.log(response);
+		if(parseInt(response.status)==0)	
+		{
+			$("#wrongAnswer").html("Incorrect Answer");
+			$('#q'+qNumber).addClass('disabled');}
+			
+		else if(parseInt(response.status)==-1){
+			$("#wrongAnswer").html("Already submited");
+			$('#q'+qNumber).addClass('disabled');}
 		var qsar=response.quesatt.split(',');
 			console.log(qsar);
-			console.log(1);
 			var arr=new Array();
 			for(var i=1;i<=25;i++)
 			{
@@ -260,19 +314,16 @@ $(':submit').click(function(){
 				if(arr[qNumber-1]>=1)
 					return;
 			}
-		if(parseInt(response.status)==0)	
-			$("#wrongAnswer").html("Incorrect Answer");
-		else if(parseInt(response.status)==-1)
-			$("#wrongAnswer").html("Already submited");
-		else if(parseInt(response.status)==1)
-		{
-			
+		
+		if(parseInt(response.status)==1)
+		{	
+			console.log(response.diff);			
 			$('#q'+qNumber).addClass('disabled');
 			$("#wrongAnswer").html("");
 	$('#Qpoints').html(50*parseInt(response.diff));
 	$('#points').html(parseInt(response.score));
 	$('.submission').fadeIn();
-			$('.modalContent').animate({top: '30vh'},1000);
+		$('.modalContent').animate({top: '30vh'},1000);
 		}
 	}
 	});
@@ -310,57 +361,54 @@ $('.mktPlace').click(function() {
 
 $("#marketPlaceList li p").click(function(){
 	var pieceType=$(this).parent().attr('id').substring(3);
-	var obj=new Object();
-	obj.pieceType=pieceType;
-	obj.points=parseInt($("#points").html());
-	obj.noOfPieces=parseInt($('#pno'+pieceType).html());
-	var data=JSON.stringify(obj);
-	
 	$.ajax({
 		type:'POST',
-		url: '',
-		data:data,
-		success: function(response){;
-			$('#pno'+pieceType).html(response.noOfPieces);
-			$("#points").html(response.points);
+		url: '/buy/',
+		data:{'pipe':pieceType-1,'user':'{{ up }}'},
+		success: function(response){
+		if(response.status)
+		{
+			var inarr=response.inventory.split(',');
+			console.log(inarr);
+			$('#pno'+pieceType).html(inarr[pieceType-1]);
+			$("#points").html(response.score);
 			alert("Selected Piece added to inventory");
+			}
+			else{
+			alert("You do not have enough points");
+			}
 		}
 
 	});
 });
 	//puzzle validation
 	$("#validateButton").click(function(){
-		var puzzleArray = new Array();
+		
+		var puzzleArray="";
 		var arrayImg=$("#puzzlePieces li").has("img");
 		for(var a=0;a<25;a++)
 		{
-			var obj= new Object();
 			f=0;
-			obj.row=Math.floor(a/5);
-			obj.column=a%5;
 			for(var b=0;b<arrayImg.length;b++){
 				if(parseInt(arrayImg[b].id.substring(1))==a){
 					f=1;
-					obj.status=1;
-					obj.pieceType=parseInt(arrayImg[b].firstChild.id.substring(3));					
+					puzzleArray+=','+parseInt(arrayImg[b].firstChild.id.substring(3));					
 					break;
 				}
 			}
 			if(f==0)
-			{
-				obj.status=0;
-				obj.pieceType=-1;
-			}
-			puzzleArray.push(obj);
+				puzzleArray+=',0';
 		}
-		var data=JSON.stringify(puzzleArray);
-		console.log(data);
+		puzzleArray=puzzleArray.substring(1);
 		$.ajax({
 			type:'POST',
-			url:'',
-			data: data,
+			url:'/validate/',
+			data: {'snapshot':puzzleArray,'user':'{{ up }}'},
 			success: function(response){
-
+					if(response.status){
+					$('.completion').fadeIn();
+					$('.modalContent').animate({top: '30vh'},1000);
+					}
 			}
 		});
 
