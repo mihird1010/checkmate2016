@@ -32,7 +32,7 @@ class UserProfile(models.Model):
 	phone2=models.BigIntegerField(blank=True,null=True)
 	email1=models.EmailField()
 	email2=models.EmailField(blank=True,null=True)
-	qa=models.CharField(max_length=100,blank=True,null=True,default=' ') #storing list of questions attempted
+	qa=models.CharField(max_length=100,blank=True,null=True,default="0") #storing list of questions attempted
 	#qa=models.ForeignKey(Question)
 	def __unicode__(self):
 		return self.user.username

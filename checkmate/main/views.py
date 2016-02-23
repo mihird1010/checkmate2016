@@ -89,14 +89,13 @@ def question(request):
 				elif ques.difficulty==3:
 					up.score+=150
 			elif data['answer'].lower()!=ques.answer:
-												#deduct points for wrong answer
-				resp['status']=0
-		
+				resp['status']=0			#deduct points for wrong answer
+		up.save()
 	else:
 		resp['content']=ques.content
 		resp['qno']=ques.no
 		resp['diff']=ques.difficulty
-	resp['score']=up.score
+	resp['score']=up.score	
 	resp['quesatt']=up.qa
 	data = json.dumps(resp,indent=4)
 	print data			#do simplejson if reqd
