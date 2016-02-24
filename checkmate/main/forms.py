@@ -19,3 +19,5 @@ class RegistrationForm(forms.Form):
 	phone2=forms.IntegerField(widget=forms.TextInput(),required=False,min_value=6000000000,label='Phone of 2nd Participant :')
 	email1=forms.EmailField(label='Email of 1st Participant :')
 	email2=forms.EmailField(required=False,label='Email of 2nd Participant :')
+	idno1=models.CharField(max_length=20)
+	idno2=models.CharField(max_length=20,blank=True)

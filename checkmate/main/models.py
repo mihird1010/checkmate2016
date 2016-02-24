@@ -27,14 +27,15 @@ class UserProfile(models.Model):
 	active_y=models.CharField(default="0",max_length=30)
 	teamname=models.CharField(max_length=200)
 	name1=models.CharField(max_length=200)
-	name2=models.CharField(max_length=200,blank=True,null=True)
+	name2=models.CharField(max_length=200,blank=True)
 	phone1=models.BigIntegerField(null=True)
 	phone2=models.BigIntegerField(blank=True,null=True)
 	email1=models.EmailField()
 	email2=models.EmailField(blank=True,null=True)
-	qa=models.CharField(max_length=100,blank=True,null=True,default="0") #storing list of questions attempted
-	#idno1=models.CharField(max_length=20)
-	#idno1=models.CharField(max_length=20,blank=True)
+	qa=models.CharField(max_length=100,blank=True,null=True,default="") #storing list of questions attempted
+	fa=models.CharField(max_length=100,blank=True,null=True,default="")
+	idno1=models.CharField(max_length=20)
+	idno2=models.CharField(max_length=20,blank=True)
 	
 	def __unicode__(self):
 		return self.user.username
