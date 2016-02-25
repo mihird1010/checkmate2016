@@ -18,10 +18,11 @@ urlpatterns = patterns('',
     url(r'^rulebook/$',rulebook,name='rulebook'),
     url(r'^validate/$',validate,name='validate'),
     url(r'^arena/$',arena,name='arena'),
-    url(r'^buy/$',arena,name='buy'),
-    #url(r'^leaderboard/$',leaderboard,name='leaderboard/'),
+    url(r'^buy/$',buy,name='buy'),
+    url(r'^leaderboard/$',leaderboard,name='leaderboard/'),
     url(r'^logout/$',logout,name='logout'),
     url(r'^register/$',register,name='register'),
+    url(r'^logout/$',logout,name='logout')
 )
 
 '''urlpatterns += patterns('',

@@ -6,3 +6,9 @@ question points
 	3=150
 wrong answer
 	-0
+2 attempts per question
+200*pathlength (actual path used which is travelled). 
+	pathlenth >18 
+		score+=1000	
+	pathlength >12
+		score+= 500

@@ -1,4 +1,27 @@
 
+
+
+
+@font-face{
+	font-family: 'Gtek';
+	src: url('../fonts/gtek.ttf');
+}
+
+@font-face{
+	font-family: 'Roboto Condensed';
+	src: url('../fonts/RobotoCondensed-Bold.ttf');
+}
+
+@font-face{
+	font-family: 'Lato-Bold';
+	src: url('../fonts/Lato-Bold.ttf');
+}
+
+@font-face{
+	font-family: 'Lato-Light';
+	src: url('../fonts/Lato-Light.ttf');
+}
+
 body{
 	margin:0;
 }
@@ -9,23 +32,26 @@ body{
 }
 
 #scorePanel{
-	background: rgb(102, 204, 204); 
-	padding: 1px 50px;
-	left: -9px;
-	border-top-color: rgb(47, 79, 79); 
-	border-top-width: 3px;
-	border-top-style: solid;
-	position: absolute;
-	z-index: 9;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	box-shadow: 0px 0px 50px 0px #66cccc;
+background: white;
+padding: 29px 30px;
+width: 9vw;
+left: 5px;
+top:5px;
+/* border-top-color: rgb(47, 79, 79); */
+/* border-top-width: 3px; */
+/* border-top-style: solid; */
+position: absolute;
+border: 12px solid rgb(102, 204, 204);
+z-index: 9;
+border-radius: 50%;
+/* border-bottom-left-radius: 10px; */
+box-shadow: 0px 0px 50px 0px #66cccc;
 }
 
 #scorePanel p{
 	font-family: "Roboto Condensed", sans-serif;
 	    text-align: center;
-    margin: 8px auto;
+    margin: -5px auto;
     font-weight: bold;
 }
 
@@ -179,10 +205,8 @@ body{
 
 
 
-@font-face{
-	font-family:'Gtek';
-	src: url('../fonts/gtek.ttf');
-}
+
+
 #submitArea{
 	position: absolute;
 	bottom: 3vh;
@@ -200,7 +224,7 @@ body{
 	margin: 5px 15px;
 }
 
-#submitButton,#validateButton{
+#submitButton,#validateButton,#completeButton{
 	cursor: pointer;
 	position: relative;
 	left: 32px;
@@ -267,38 +291,51 @@ body{
 #initPipe{
 	position: absolute;
 	width: 15%;
-	left: -36px;
-	top: 47px;
+left: -33px;
+top: 38px;
 }
 
-#endPipe{
-	position: absolute;
-	width: 15%;
-	right: -41px;
-	bottom: 78px;
-}
+
 
 #endPipe0{
 	position: absolute;
 	height: 15%;
-	bottom: -24px;
-	right: 56px;
+	bottom: 4px;
+right: 36px;
 }	
 
 
 #puzzlePieces li{
 	display: inline-block;
 	width: 80px;
-	min-height: 78px;
-	margin: 3px;
+	max-height: 80px;
+min-height: 80px;
 	cursor: move;
+	margin:0px;
+	border: 1px solid rgb(252, 201, 11);
+box-shadow: 0px 0px 13px 0px rgb(252, 201, 11);
+border-radius: 11px;
 }
 
 #puzzlePieces li img{
-	width:100%;
+	width:101%;
+	border-radius: 11px;
 }
 
+#puzzlePieces2 li {
+display: inline-block;
+width: 80px;
+min-height: 78px;
+border:1px solid black;
+}
 
+#puzzlePieces2{
+	display: none;
+	list-style: none;
+	position: absolute;
+}
+
+*/
 #inventoryPanel{
 	position: relative;
 	min-height: 74vh;
@@ -483,7 +520,7 @@ letter-spacing: 0px;
 	background: red !important;
     color: white !important;
     border: 1px solid red !important;
-    padding: 3px 6px !important;
+    padding: 3px 6px ;
     /* font-size: 14px !important; */
     font-family: 'Gtek' !important;
     text-transform: lowercase !important;

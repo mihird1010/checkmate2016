@@ -19,9 +19,10 @@ urlpatterns = patterns('',
     url(r'^validate/$',validate,name='validate'),
     url(r'^arena/$',arena,name='arena'),
     url(r'^buy/$',buy,name='buy'),
-    #url(r'^leaderboard/$',leaderboard,name='leaderboard/'),
+    url(r'^leaderboard/$',leaderboard,name='leaderboard/'),
     url(r'^logout/$',logout,name='logout'),
     url(r'^register/$',register,name='register'),
+    url(r'^submit/$',submit,name='submit')
 )
 
 '''urlpatterns += patterns('',
