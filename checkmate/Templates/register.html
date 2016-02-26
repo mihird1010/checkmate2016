@@ -49,7 +49,7 @@ padding-top: 16px;">
 			<div class='bar'></div>
 		</div>
 		<div class="input-container">
-			<input id="email1" type='text' name="email1" required>
+			<input type='text' name="email1" required>
 			<label for="email1">Email Id</label>
 			<div class='bar'></div>
 		</div>
@@ -75,7 +75,7 @@ padding-top: 16px;">
 			<div class='bar'></div>
 		</div>
 		<div class="input-container">
-			<input id="email2" type='text' name="email2" >
+			<input type='text' name="email2" >
 			<label for="email2">Email Id</label>
 			<div class='bar'></div>
 		</div>
@@ -105,11 +105,12 @@ padding-top: 16px;">
 	</div>
 </div>
 
-<script>/*
+<script>
 function validateForm(){
  var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
  var formemail1 = $("#email1").val();
  var formemail2= $("#email2").val();
+ var pass = $("#pass").val();
   
  if(!emailRegex.test(formemail1)){
     $("#email1").focus();

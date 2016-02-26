@@ -131,11 +131,12 @@ body{
 }
 
 .sidePanel h1{
-	font-family: 'Gtek',sans-serif;
+	font-family: 'Lato-Light';
 	text-align: center;
 	border-bottom: 7px solid white;
 	padding: 25px 0px;
 	margin: 0;    
+	color: white;
 	border-radius: 20%;
 	letter-spacing: 5px;
 }
@@ -349,7 +350,8 @@ border:1px solid black;
 
 
 #inventoryList{
-	padding-left: 12px !important;
+	padding-left: 6px !important;
+top: 81px;
 }
 
 
@@ -426,7 +428,7 @@ background: #8BD0F0;
 }
 
 .modalContent h1{
-	font-family: 'Gtek',sans-serif;
+	font-family: 'Lato-Bold';
 	padding: 17px 0px;
 	margin: 0;
 	text-align: center;
@@ -803,4 +805,27 @@ border-radius: 6px;
 }
 .pipe_grid > .pipe_img{
 	xyz........
+}
+
+
+@media screen and (min-width: 1200px) {
+	#puzzleArea{
+	width:37vw;
+	top : 14vh;
+	left: 22vw;
+	}
+
+	#scorePanel{
+		padding: 30px 31px;
+	}
+
+	#inventoryList{
+		padding-left: 46px !important;
+		top: 81px;
+	}
+
+	#gotoMarket{
+		top: 110px;
+		left: 51px;
+	}
 }

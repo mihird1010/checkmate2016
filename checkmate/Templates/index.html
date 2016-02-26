@@ -29,7 +29,7 @@
 </div>
 
 <section class="sidePanel" id="questions">
-	<h1>questions</h1>
+	<h1>Questions</h1>
 	<div id="questionsPanel">
 		<ul id="questionList">
 			
@@ -37,6 +37,22 @@
 	</div>
 </section>
 <section class="mainContent">
+	<div style="
+    background: white;
+    position: absolute;
+    right: 32vw;
+    width: 18vw;
+    padding: 8px 0px;
+    /* text-align: center; */
+    border-bottom: 4px solid rgb(46, 142, 203);
+    /* border-right: 4px; */
+">
+		<a href="/rulebook.html" style="text-decoration: none;"><h3 id="rulebookLink" style="    /* text-align: center; */
+    /* margin: 0 auto; */
+    width: 77%;
+    text-align: center;
+"> > View Rules</h3></a>
+	</div>
 	<div id="questionSection">
 	<div id="qNo"><h1> </h1></div>
 		<div id="questionContainer">
@@ -63,7 +79,7 @@ font-family: Arial;"></h5>
 </section>
 <section class="modal submission">
 	<div class="modalContent">
-		<h1>congrats </h1>
+		<h1>Congrats </h1>
 		<h6>The answer submited successfully</h6>
 		<p>You have earned <span id="Qpoints">50</span> points </p>
 		<div id='modalFooter'>
@@ -101,7 +117,7 @@ font-family: Arial;"></h5>
 </section>
 <section class="modal completion" style="position: fixed;">
 	<div class="modalContent" style="height: 331px;">
-		<h1>congrats </h1>
+		<h1>Congrats </h1>
 		<h6>You have completed the game successfully</h6>
 		<p>Market Score: <span id="Mpoints"></span> points </p>
 		<p>Path Score: <span id="Ppoints"></span> points </p>
@@ -116,10 +132,9 @@ font-family: Arial;"></h5>
 
 <div id="puzzlePage">
 	<section class="sidePanel">
-		<h1>inventory</h1>
+		<h1>Inventory</h1>
 		<div id="inventoryPanel">
-			<div id="inventoryList" style="padding-left: 6px !important;
-top: 81px;
+			<div id="inventoryList" style="top: 81px;
 position: relative;"></div>
 		</div>
 		<p id="gotoMarket">Market Place</p>
@@ -139,6 +154,23 @@ position: relative;"></div>
 	</section>
 </div>
 <script type="text/javascript">
+/*
+function resize(){
+		if($(document).width() > 1200 ){
+			$("#puzzleArea").css({
+				"width":"37vw",
+				"top" : "14vh",
+				"left":"22vw"
+			});
+
+			$("#inventoryList").css({
+
+			})
+	}
+}
+
+resize();*/
+
 
 
 	var questDiv= document.getElementById('questionList');
@@ -363,15 +395,17 @@ $('#submitButton').click(function(){
 			{
 				$('#q'+qNumber).addClass('disabled');
 				if(arr[qNumber-1]>=2)
-					return;
+						return;
 			}
 		
 		if(parseInt(response.status)==1)
 		{			
 			$('#q'+qNumber).addClass('disabled');
 			$("#wrongAnswer").html("");
-	$('#Qpoints').html(50*parseInt(response.diff));
-	$('#points').html(parseInt(response.score));
+			var old=parseInt($('#points').html());
+			$('#points').html(parseInt(response.score));
+			$('#Qpoints').html(parseInt($('#points').html())-old);
+	
 	$('.submission').fadeIn();
 		$('.modalContent').animate({top: '30vh'},1000);
 		}
