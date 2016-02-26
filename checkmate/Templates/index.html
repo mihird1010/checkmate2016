@@ -2,9 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="shortcut icon" href="{% static "img/acmLogo.ico" %}"/>
 	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<script src="{% static "js/jquery.min.js" %}"></script>
+	<script src="{% static "js/jquery-ui.css" %}"></script>		
+	<script src="{% static "js/jquery-ui.js" %}"></script>
 	<title>ACM | Checkmate 2016</title>
 </head>
 <body>
@@ -18,7 +21,7 @@
 	<p style="font-family: 'Lato-Light',sans-serif;font-weight: 100;">POINTS: </p>
 	<p id="points" style="font-size: 16px;font-family: 'Lato-Bold';padding: 5px 5px;">{{ up.score }}</p>
 </div>
-<div style=" position: relative;top: 16px;">
+<div style=" position: relative;top: 13px;">
 	<a href="/logout/">
 	<img src="{% static "img/logout.png" %}" style="width: 18%;margin: 0 auto;display: block;">
 	</a>
@@ -115,8 +118,11 @@ font-family: Arial;"></h5>
 	<section class="sidePanel">
 		<h1>inventory</h1>
 		<div id="inventoryPanel">
-			<ul id="inventoryList"></ul>
+			<div id="inventoryList" style="padding-left: 6px !important;
+top: 81px;
+position: relative;"></div>
 		</div>
+		<p id="gotoMarket">Market Place</p>
 	</section>
 	
 	<section id="puzzleArea">
@@ -129,6 +135,7 @@ font-family: Arial;"></h5>
 		</ul>
 	
 	<button type="submit" id="validateButton">VALIDATE</button>
+	<button type="submit" id="resetButton" style="background: red;border: red;">RESET</button>
 	</section>
 </div>
 <script type="text/javascript">
@@ -147,15 +154,25 @@ font-family: Arial;"></h5>
 	}
 
 
-	
+	var inv="{{ up.pipe_inventory}}".split(',');
+
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+
  window.onload = function (){	
+
+
  		$('#qNo').hide();
 		var arr="{{ up.qa }}".split(',');
-		var inv="{{ up.pipe_inventory}}".split(',');
-		console.log(inv);
+
 		var first=1;
 		for(var a=1;a<=25;a++){
-			console.log(1);
 			var f=0;
 			for(var b=0;b<arr.length-1;b++)
 			{
@@ -179,57 +196,72 @@ font-family: Arial;"></h5>
 			}*/
 		}
 		
-		for(var i=1;i<=6;i++){
-			$('#pno'+i).html(inv[i-1]);
-		}
+		makeInv(inv);
 };
 
 	var puzzleDiv= document.getElementById('puzzlePieces');
 	function puzzleListF(){
 		for(var i=1;i<=25;i++){
-			$('#puzzlePieces').append("<li id= p"+i+"></li>");
-			$('#puzzlePieces2').append("<li></li>");
+			$('#puzzlePieces').append('<li id= p'+i+' class="pipe_grid"></li>');
 			
 		}
-
-
 	}
 
 	var inventoryDiv= document.getElementById('inventoryList');
 	function inventoryListF(){
 		for(var i=1;i<=6;i++){
-			$('#inventoryList').append("<li id= pi"+i+" ondrop='drop(event)' ondragover='allowDrop(event)'><img draggable='true' ondragstart='drag(event)' ondragend='dragend(event)' id=inp"+i+" ><img class='marketIcon' src='{% static 'img/market.png' %}' style='width:20%;position: relative;top: 6px;'><p id= pno"+i+" >0</p></li>");
-			switch(i){
-				case 1:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece1.png' %}');break;
-				case 2:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece2.png' %}');break;
-				case 3:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece3.png' %}');break;
-				case 4:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece4.png' %}');break;
-				case 5:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece5.png' %}');break;
-				case 6:$('#pi'+i+' img:not(.marketIcon)').attr('src','{% static 'img/piece6.png' %}');break;
-			}
+			$('#inventoryList').append('<div class="pipe_inventory" id= pi'+i+'><p id= pno'+i+' >0</p></div>');
+			//$('#pi'+i+' img').attr('src','/static/img/piece'+i+'.png');
 		}
 	}
 
 	function marketListF(){
 		for(var i=1;i<=6;i++){
 			$('#marketPlaceList').append("<li id= pim"+i+"><img><p>Buy</p></li>");
-			switch(i){
-				case 1:$('#pim'+i+' img').attr('src','{% static 'img/piece1.png' %}');break;
-				case 2:$('#pim'+i+' img').attr('src','{% static 'img/piece2.png' %}');break;
-				case 3:$('#pim'+i+' img').attr('src','{% static 'img/piece3.png' %}');break;
-				case 4:$('#pim'+i+' img').attr('src','{% static 'img/piece4.png' %}');break;
-				case 5:$('#pim'+i+' img').attr('src','{% static 'img/piece5.png' %}');break;
-				case 6:$('#pim'+i+' img').attr('src','{% static 'img/piece6.png' %}');break;
-			}
+			$('#pim'+i+' img').attr('src','/static/img/piece'+i+'.png');	
 		}
 	}
 	marketListF();
 	questionListF();
 	puzzleListF();
 	inventoryListF();
+// drag drop part ===============================================================
+	var pipe_drag_opt ={
+		revert: "invalid",
+		stop: function(){
+			$(this).draggable('option','revert','invalid');
+		}
+	}
+	var x;
+	$('.pipe_img').draggable(pipe_drag_opt);
+	$('.pipe_grid').droppable({
+		drop: function(event,ui){
+			var $this =$(this);
+			x = $this;
+			if($this.find('.pipe_img').length >= 1){
+				ui.draggable.draggable('option','revert',true);
+				return;
+			}
+			ui.draggable.appendTo($this).css({
+				top: "0px",
+				left: "0px"
+			});
+			refresh_pipe_no();
+		}
+	});
 
-	
-//drag and drop
+
+function refresh_pipe_no(){
+	$('.pipe_inventory').each(function(){
+		var no = $(this).find('.pipe_img').length;
+		$(this).find('p').html(no);
+	})
+}
+
+//increase z-index on drag
+
+// drag drop part============================END===================================
+
 
 	function allowDrop(ev) {
     ev.preventDefault();
@@ -253,10 +285,9 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    console.log(document.getElementById(data).id);
     if(document.getElementById(data).parentNode.parentNode.id=="inventoryList")
 	{
-		if(parseInt(document.getElementById(data).nextSibling.nextSibling.innerHTML)>0)
+		if(parseInt(document.getElementById(data).nextSibling.innerHTML)>0)
 		{
 	
 		//note
@@ -265,7 +296,7 @@ function drop(ev) {
    		nodeCopy.id = "ppi"+num;
    		ev.target.appendChild(nodeCopy);
    		if(ev.target.parentNode.parentNode.id!="inventoryList")
-   				document.getElementById(data).nextSibling.nextSibling.innerHTML=parseInt(document.getElementById(data).nextSibling.nextSibling.innerHTML)-1;
+   				document.getElementById(data).nextSibling.innerHTML=parseInt(document.getElementById(data).nextSibling.innerHTML)-1;
    		
    		}
    	}
@@ -276,11 +307,6 @@ function drop(ev) {
 
 
 
-</script>
-
-
-<script type="text/javascript">
-
 
 var qNumber;
 var qNos=$('#questionList li');
@@ -289,14 +315,12 @@ qNos.click(function(){
 	$("#wrongAnswer").html("");
 	$('#questionSection').animate({left:'-65vw'},1000);
 	var getId=$(this).attr('id');
-	qNumber=getId.substring(1)
-	console.log(qNumber);
+	qNumber=getId.substring(1);
 	$.ajax({
 		type:'POST',
 		url: '/question/',
 		data:{ 'no' : qNumber },
 		success: function(obj){
-		console.log(obj);
 		setTimeout(function(){$('#qNo h1').html(obj.qno);
 	$('#questionContainer h3').html(obj.content);},1000);
 	$('#questionSection').animate({left:'0vw'},1000);
@@ -305,7 +329,7 @@ qNos.click(function(){
 	
 });	
 
-$(':submit').click(function(){
+$('#submitButton').click(function(){
 	if(qNumber==undefined){
 		$("#wrongAnswer").html("Select a question");
 		return;
@@ -315,7 +339,6 @@ $(':submit').click(function(){
 	url:'/question/',
 	data: { 'no': qNumber , 'answer': $('#submitBox').val() },
 	success : function(response){
-		console.log(response);
 		if(parseInt(response.status)==0)	
 		{
 			$("#wrongAnswer").html("Incorrect Answer");
@@ -324,7 +347,6 @@ $(':submit').click(function(){
 			$("#wrongAnswer").html("Already submited");
 			$('#q'+qNumber).addClass('disabled');}
 		var qsar=response.quesatt.split(',');
-			console.log(qsar);
 			var arr=new Array();
 			for(var i=1;i<=25;i++)
 			{
@@ -337,7 +359,6 @@ $(':submit').click(function(){
 				arr.push(f);
 
 			}
-			console.log(arr);
 			if(arr[qNumber-1]>2)
 			{
 				$('#q'+qNumber).addClass('disabled');
@@ -346,13 +367,12 @@ $(':submit').click(function(){
 			}
 		
 		if(parseInt(response.status)==1)
-		{	
-			console.log(response.diff);			
+		{			
 			$('#q'+qNumber).addClass('disabled');
 			$("#wrongAnswer").html("");
 	$('#Qpoints').html(50*parseInt(response.diff));
 	$('#points').html(parseInt(response.score));
-	$('.completion').fadeIn();
+	$('.submission').fadeIn();
 		$('.modalContent').animate({top: '30vh'},1000);
 		}
 	}
@@ -377,11 +397,12 @@ $('.close').click(function(){
 	$('.modalContent').animate({top: '20vh'},1000);
 });
 
-$('.marketIcon').click(function(){
+$('#puzzlePage #gotoMarket').click(function(){
+	$('#puzzlePieces li img').remove();
 	$('.mktPlace').css('top','100vh');
 	$('.mktPlace').fadeIn();
-
 	$('.modalContent').animate({top: '20vh'},1000);
+
 });
 /*
 $('.mktPlace').click(function() {
@@ -400,9 +421,10 @@ $("#marketPlaceList li p").click(function(){
 		success: function(response){
 		if(response.status)
 		{
-			var inarr=response.inventory.split(',');
-			console.log(inarr);
-			$('#pno'+pieceType).html(inarr[pieceType-1]);
+			inv=response.inventory.split(',');
+			
+			makeInv(inv);
+			$('#pno'+pieceType).html(inv[pieceType-1]);
 			$("#points").html(response.score);
 			alert("Selected Piece added to inventory");
 			}
@@ -413,6 +435,27 @@ $("#marketPlaceList li p").click(function(){
 
 	});
 });
+
+function makeInv(inv)
+{
+	$('.pipe_inventory').html('');
+	for(var i=1;i<=6;i++)
+	{
+		for(var j=0;j<inv[i-1];j++)
+		{
+			$('#pi'+i).append('<img class="pipe_img" id="inp'+i+'" src="/static/img/piece'+i+'.png" >');
+		}
+		$('#pi'+i).append('<p id=pno'+i+'></p>');
+	}
+	$('.pipe_img').draggable(pipe_drag_opt);
+	refresh_pipe_no();
+}
+
+$("#resetButton").click(function(){
+	$(".pipe_grid").html("");
+	makeInv(inv);
+});
+
 	//puzzle validation
 	$("#validateButton").click(function(){
 		
@@ -432,7 +475,6 @@ $("#marketPlaceList li p").click(function(){
 				puzzleArray+=',0';
 		}
 		puzzleArray=puzzleArray.substring(3);
-		console.log(puzzleArray);
 		$.ajax({
 			type:'POST',
 			url:'/validate/',
@@ -452,6 +494,26 @@ $("#marketPlaceList li p").click(function(){
 		});
 
 	});
+
+	$("#completeButton").click(function(){
+		console.log('{{ u }}');
+		$.ajax({
+			type:'POST',
+			data: { 'user' : '{{ u }}'},
+			url:'/submit/',
+			success: function(response){
+
+			}
+		});
+	});
+
+//
+function liback(){
+	for(var i=1;i<=6;i++)
+		$('#pi'+i).css('background','url(/static/img/piece'+i+'.png)');
+}
+
+liback();
 </script>
 </body>
 <!--

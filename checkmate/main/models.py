@@ -34,6 +34,7 @@ class UserProfile(models.Model):
 	idno1=models.CharField(max_length=20)
 	idno2=models.CharField(max_length=20,blank=True)
 	submitted=models.IntegerField(default=1)
+	ip=models.CharField(max_length=20,blank=True,null=True)
 	def __unicode__(self):
 		return self.user.username
 		

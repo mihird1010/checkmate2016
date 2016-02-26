@@ -22,9 +22,11 @@ def login(request):
 			username = data['username']
 			password = data['password']
 			user = authenticate(username=username, password=password)
-			if UserProfile.objects.get(user=user).submitted==1:	
-				return render_to_response('cannotlogin.html')
-				
+			try:
+				if UserProfile.objects.get(user=user).submitted==1:	
+					return render_to_response('cannotlogin.html')
+			except:
+				pass
 			if user is not None:
 				if user.is_active:
 					auth.login(request, user)
@@ -210,10 +212,14 @@ def register(request):
 	m=''
 	if request.user.is_authenticated():
 		return HttpResponseRedirect('/main/')
-	if request.POST:
+	if request.method=='POST':
 		form=RegistrationForm(request.POST)
 		#a=form.cleaned_data
-		#print form
+		#print												
+		'''if UserProfile.objects.get(ip=request.META['HTTP_X_FORWARDED_FOR']).exists():		
+			m='Already Registered once.'
+			return render_to_response('register.html',{'message':m},context_instance=RequestContext(request))
+		'''	
 		if form.is_valid():
 			data=form.cleaned_data
 			print data
@@ -224,7 +230,7 @@ def register(request):
 			try:
 				u.save()
 			except IntegrityError:
-				m='Username already exists'
+				m='Username already exists.'
 				return render_to_response('register.html',{'message':m},context_instance=RequestContext(request))
 			up.teamname=data['username']
 			up.name1=data['name1']
@@ -234,6 +240,7 @@ def register(request):
 			up.email1=data['email1']
 			up.email2=data['email2']
 			up.user=u
+			#up.ip=request.ip
 			up.save()
 			return HttpResponseRedirect('/login/')
 		else:
@@ -299,9 +306,9 @@ def validate(request):
 	if r['status']==1:
 		#up.pipe_inventory=",".join(inv)
 		up.pathscore+=x*200			#document this
-		if x>18:
+		if x>=18:
 			up.pathscore+=1000
-		elif x>12:
+		elif x>=12:
 			up.pathscore+=500
 	r['score']=up.score
 	r['pathscore']=up.pathscore
@@ -373,8 +380,12 @@ def submit():
 		up=UserProfile.objects.get(user=u)
 	except :
 		raise Http404
-		
+	
+	auth.logout(request)	
 	up.submitted=1
+	up.score+=up.pathscore
+	
+	up.save()
 	
 def startlogin():
 	up=UserProfile.objects.all()

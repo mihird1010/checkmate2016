@@ -1,4 +1,6 @@
-
+body{
+	overflow-x:hidden;
+}
 
 
 
@@ -33,7 +35,7 @@ body{
 
 #scorePanel{
 background: white;
-padding: 29px 30px;
+padding: 16px 30px;
 width: 9vw;
 left: 5px;
 top:5px;
@@ -142,12 +144,12 @@ body{
 #questionsPanel{
 	position: relative;
 	min-height: 74vh;
-	margin-top: 22px;
-	padding: 31px 18px;
+	margin-top: 45px;
+	padding: 31px 0px;
 }
 
 #questionsPanel ul{
-	padding-left: 12px !important;
+	padding-left: 16px !important;
 }
 
 #questionsPanel ul li{
@@ -224,7 +226,7 @@ body{
 	margin: 5px 15px;
 }
 
-#submitButton,#validateButton,#completeButton{
+#submitButton,#validateButton,#completeButton,#resetButton{
 	cursor: pointer;
 	position: relative;
 	left: 32px;
@@ -271,28 +273,30 @@ body{
 
 #puzzleArea{
 
-	/* vertical-align: middle; */
-	width: 37vw;
-	min-height: 64vh;
-	position: relative;
-	/* margin: 0vh auto; */
-	background: white;
-	/* padding: 59px; */
-	top: 9vh;
-	left: 25vw;
-	/* border: 1px solid black; */
-	border-radius: 10px;
-	box-shadow: 0px 0px 60px -9px black;
-	padding-bottom: 21px;
-	padding-top: 19px;
+width: 48vw;
+min-height: 64vh;
+position: relative;
+/* margin: 0vh auto; */
+background: white;
+/* padding: 59px; */
+top: 21vh;
+left: 13vw;
+/* border: 1px solid black; */
+border-radius: 10px;
+box-shadow: 0px 0px 60px -9px black;
+padding-bottom: 21px;
+padding-top: 53px;
+padding-left: 44px;
+padding-right: 37px;
 
 }
 
 #initPipe{
 	position: absolute;
-	width: 15%;
-left: -33px;
-top: 38px;
+width: 81px;
+left: 3px;
+top: 68px;
+
 }
 
 
@@ -300,8 +304,8 @@ top: 38px;
 #endPipe0{
 	position: absolute;
 	height: 15%;
-	bottom: 4px;
-right: 36px;
+bottom: 2px;
+right: 77px;
 }	
 
 
@@ -375,18 +379,18 @@ border:1px solid black;
 	color: white;
 }
 
-#inventoryList li p{
+.pipe_inventory p{
 	display: inline;
-	position: relative;
-	top: 5px;
-	left: 14px;
-	padding: 3px 7px;
-	border: 1px solid#FCC90B;
-	border-radius: 3px;
-	font-size: 12px;
-	color: black;
-	font-weight: 600;
-	background: #FCC90B;
+position: relative;
+top: 0px;
+left: 0px;
+padding: 3px 7px;
+border: 1px solid #8BD0F0;
+border-radius: 3px;
+font-size: 12px;
+color: black;
+font-weight: 600;
+background: #8BD0F0;
 }
 
 
@@ -496,7 +500,7 @@ width: 60vw;
 height: 536px;
 padding-top: 16px;
 background-color: #FFF;
-top: -4vh;
+top: 3vh;
 box-shadow: 0px 0px 7px -2px;
 border-radius: 2px;
 }
@@ -536,7 +540,9 @@ form{
 fieldset{
 	border: none;
 	padding: 22px 0px;
-	margin: 0 auto;
+margin: 9px auto;
+min-width: 100%;
+position: relative;
 }
 
 form label {
@@ -663,7 +669,8 @@ form input[type="submit"]:hover{
 }
 
 .button-container{
-
+	position: relative;
+top: -17px;
 	text-align: right;
 	padding: 0px 50px;
 }
@@ -746,12 +753,12 @@ form input[type="submit"]:hover{
 
 
 #rulebookLink{
-	font-family: Roboto Condensed; 
+	font-family: "Roboto Condensed"; 
 	color: rgb(46, 142, 203);
 	 margin: 0px 21px;
 	  font-size: 14px;
 	cursor:pointer;
-	width: 43%;
+	width: 60%;
 }
 
 #rulebookLink:hover{
@@ -761,4 +768,39 @@ form input[type="submit"]:hover{
 .disabled{
     pointer-events:none;
     opacity:0.4;
+}
+
+#puzzlePage #gotoMarket{
+	font-family: 'Roboto Condensed', sans-serif;
+display: inline;
+position: relative;
+top: 87px;
+left: 10px;
+padding: 3px 7px;
+border: 1px solid#FCC90B;
+border-radius: 3px;
+font-size: 12px;
+color: black;
+font-weight: 600;
+background: #FCC90B;
+}
+
+
+.pipe_inventory{
+	width: 74px;
+position: relative;
+height: 74px;
+border: 1px solid white;
+display: inline-block;
+margin: 3px;
+border-radius: 6px;
+
+}
+.pipe_inventory .pipe_img{
+	position: absolute;
+	top:0;
+	left:0;
+}
+.pipe_grid > .pipe_img{
+	xyz........
 }
